@@ -86,5 +86,16 @@ frabpulse/
 - **Rationale:** The application must run completely offline and locally without requiring paid API keys or exposing developers to network failures. The deterministic provider uses rule-based heuristic extraction and structured fixtures to produce fully realistic, reproducible event syntheses during development and CI.
 
 ### 5. Financial Charting Strategy
-- **Decision:** Tailored SVG/Canvas responsive financial time-series chart with interactive event markers.
+- **Decision:** Tailored SVG responsive financial time-series chart with interactive event markers.
 - **Rationale:** Full control over event annotation pins, temporal window highlighting (-30m to +30m post-announcement), and responsive dark-mode lab aesthetic without third-party canvas bundle bloat.
+
+### 6. Mobile-First Responsive Architecture
+- **Decision:** Full mobile-first responsive layout scaling from 320px ultra-compact phones to 4K desktop displays.
+- **Rationale:** Financial traders and researchers frequently check live market movements on mobile devices while traveling. The UI adapts layout density:
+  - Mobile (<640px): 1-column prioritized flow (current prices -> spread -> arbitrage gap -> mobile touch-friendly chart -> vertical event timeline), bottom thumb navigation, and 44px min tap targets.
+  - Tablet (640px - 1023px): 2-column balanced grid with accessible touch controls.
+  - Desktop (1024px+): 3-column information-rich dashboard with dual-asset charts and multi-source event matrices.
+
+### 7. SEO & Organic Discoverability Architecture
+- **Decision:** Next.js Server Components for public routes with dynamic Metadata API, automated sitemap.xml, robots.txt, and Schema.org structured data.
+- **Rationale:** Public financial pages (`/gold`, `/gold/[slug]`, `/topics/[slug]`, `/events/[id]`, `/methodology`) render meaningful semantic HTML on the server, ensuring full indexability by search engines without relying on client-side JavaScript execution. Rich snippets use Schema.org `Organization`, `WebSite`, `BreadcrumbList`, and `NewsArticle` schemas.

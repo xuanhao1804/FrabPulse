@@ -1,10 +1,47 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import { ShieldCheck, Scale, Cpu, AlertTriangle, Layers, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
+export const metadata: Metadata = {
+  title: 'Methodology, Data Transparency & Epistemology | FrabPulse',
+  description:
+    'Learn how FrabPulse separates observed market facts from journalist interpretations and AI summaries, computes the Vietnam vs World gold gap, and handles temporal correlation.',
+  alternates: {
+    canonical: 'https://frabpulse.com/methodology'
+  },
+  openGraph: {
+    title: 'Methodology, Data Transparency & Epistemology | FrabPulse',
+    description: 'Learn how FrabPulse separates observed market facts from source interpretations and AI extraction.'
+  }
+};
+
 export default function MethodologyPage() {
+  const breadcrumbsJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://frabpulse.com'
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Methodology & Epistemology',
+        item: 'https://frabpulse.com/methodology'
+      }
+    ]
+  };
+
   return (
-    <div className="max-w-4xl mx-auto space-y-10">
+    <div className="max-w-4xl mx-auto space-y-8 sm:space-y-10 animate-in fade-in duration-300">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsJsonLd) }}
+      />
       {/* Title */}
       <div className="space-y-3 pb-6 border-b border-pulse-800">
         <div className="flex items-center gap-2">

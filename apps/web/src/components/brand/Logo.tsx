@@ -56,7 +56,7 @@ export function Logo({ size = 'md', showSubtitle = true }: LogoProps) {
           </span>
         </div>
         {showSubtitle && (
-          <span className="text-[11px] text-pulse-400 tracking-wide mt-1">
+          <span className="hidden sm:inline text-[11px] text-pulse-400 tracking-wide mt-0.5">
             Real-time Event Intelligence
           </span>
         )}

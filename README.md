@@ -44,7 +44,7 @@ FrabPulse strictly avoids unsupported causal claims. We separate:
 
 ---
 
-## 3. Product Verticals
+## 3. Product Verticals & Public Web Routes
 
 ```text
 FrabPulse
@@ -62,6 +62,28 @@ FrabPulse
 └── AI Pulse [FUTURE]
     └── Frontier LLM Releases, API Pricing Shifts, Benchmarks
 ```
+
+### Public Indexable Routes (Server-Rendered & SEO-Ready)
+
+| Route | Content & Epistemology | Metadata & Structured Data |
+| :--- | :--- | :--- |
+| `/` | Real-time Gold Pulse Radar, arbitrage gap, interactive chart, event feed | Dynamic Metadata, Dataset JSON-LD |
+| `/gold` | Bullion directory & physical unit conversion guide | BreadcrumbList, WebPage JSON-LD |
+| `/gold/sjc` | SJC Gold 9999 live quotes, spreads, Decree 24 context | FinancialProduct, Breadcrumbs |
+| `/gold/doji` | DOJI Gold retail bullion quotes, spreads | FinancialProduct, Breadcrumbs |
+| `/gold/pnj` | Phu Nhuan Jewelry 24K bullion rates | FinancialProduct, Breadcrumbs |
+| `/gold/world` | International spot gold (XAU/USD) & FX rate factor | FinancialProduct, Breadcrumbs |
+| `/events/[id]` | 3-layer epistemic separation breakdown (Facts, Sources, AI) | NewsArticle JSON-LD with source citations |
+| `/topics/[slug]` | Thematic event intelligence (`central-bank`, `vietnam-regulation`, `geopolitics`) | CollectionPage, Breadcrumbs |
+| `/methodology` | Data transparency, gold gap math, correlation vs. causation | Article, Transparency Guide |
+| `/sitemap.xml` | Automated XML sitemap of all indexable public pages | Dynamic Next.js MetadataRoute |
+| `/robots.txt` | Crawler policy allowing public routes and disallowing private API routes | Dynamic Next.js MetadataRoute |
+
+### Mobile-First Responsive Experience
+- **Viewport Range:** Tested and optimized from **320px (ultra-compact mobile)** up to **4K widescreen displays**.
+- **Touch-First Controls:** All buttons, selectors, tabs, and event markers feature **minimum 44px touch targets**.
+- **Mobile Prioritized Flow:** On phones, users see current prices, daily delta, spread, and the arbitrage gap above the fold within 3 seconds, followed by touch-friendly charts and a vertical event timeline.
+- **Dual Navigation:** Accessible mobile drawer and persistent bottom thumb bar on mobile; clean horizontal header on desktop.
 
 ---
 

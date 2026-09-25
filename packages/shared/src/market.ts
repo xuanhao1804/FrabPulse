@@ -12,6 +12,7 @@ export type AssetCategory =
 
 export interface AssetMetadata {
   code: AssetCode;
+  slug: string;
   name: string;
   category: AssetCategory;
   unit: string;
@@ -22,6 +23,7 @@ export interface AssetMetadata {
 export const ASSET_DEFINITIONS: Record<AssetCode, AssetMetadata> = {
   SJC_VN: {
     code: 'SJC_VN',
+    slug: 'sjc',
     name: 'SJC Gold 9999',
     category: 'GOLD_DOMESTIC',
     unit: 'VND/lượng',
@@ -30,6 +32,7 @@ export const ASSET_DEFINITIONS: Record<AssetCode, AssetMetadata> = {
   },
   DOJI_VN: {
     code: 'DOJI_VN',
+    slug: 'doji',
     name: 'DOJI Gold',
     category: 'GOLD_DOMESTIC',
     unit: 'VND/lượng',
@@ -38,6 +41,7 @@ export const ASSET_DEFINITIONS: Record<AssetCode, AssetMetadata> = {
   },
   PNJ_VN: {
     code: 'PNJ_VN',
+    slug: 'pnj',
     name: 'PNJ Gold 24K',
     category: 'GOLD_DOMESTIC',
     unit: 'VND/lượng',
@@ -46,6 +50,7 @@ export const ASSET_DEFINITIONS: Record<AssetCode, AssetMetadata> = {
   },
   XAU_USD: {
     code: 'XAU_USD',
+    slug: 'world',
     name: 'International Spot Gold',
     category: 'GOLD_INTERNATIONAL',
     unit: 'USD/oz',
@@ -54,6 +59,7 @@ export const ASSET_DEFINITIONS: Record<AssetCode, AssetMetadata> = {
   },
   USD_VND: {
     code: 'USD_VND',
+    slug: 'usdvnd',
     name: 'USD / VND Forex Rate',
     category: 'FOREX',
     unit: 'VND/USD',
@@ -61,6 +67,10 @@ export const ASSET_DEFINITIONS: Record<AssetCode, AssetMetadata> = {
     description: 'Commercial exchange rate for US Dollar to Vietnamese Dong'
   }
 };
+
+export function getAssetBySlug(slug: string): AssetMetadata | undefined {
+  return Object.values(ASSET_DEFINITIONS).find((a) => a.slug === slug.toLowerCase());
+}
 
 export interface PriceSnapshot {
   assetCode: AssetCode;

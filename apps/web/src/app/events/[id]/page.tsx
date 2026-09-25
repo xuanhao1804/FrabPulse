@@ -1,9 +1,9 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { MarketEvent, formatPercent, formatUsd, formatVndMillions } from '@frabpulse/shared';
-import { fetchEventById } from '../../../lib/api-client';
+import React from 'react';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { MarketEvent, formatPercent, formatUsd, formatVndMillions, ASSET_DEFINITIONS } from '@frabpulse/shared';
+import { fetchEventById, fetchMarketEvents } from '../../../lib/api-client';
 import {
   ArrowLeft,
   Calendar,
@@ -15,72 +15,141 @@ import {
   Cpu,
   FileText,
   AlertTriangle,
-  Scale
+  Scale,
+  Compass,
+  Layers
 } from 'lucide-react';
-import Link from 'next/link';
 
-export default function EventDetailPage() {
-  const params = useParams();
-  const router = useRouter();
-  const id = typeof params?.id === 'string' ? params.id : '';
+interface Props {
+  params: Promise<{ id: string }>;
+}
 
-  const [event, setEvent] = useState<MarketEvent | null>(null);
-  const [loading, setLoading] = useState(true);
+export async function generateStaticParams() {
+  const events = await fetchMarketEvents();
+  return events.map((e) => ({ id: e.id }));
+}
 
-  useEffect(() => {
-    if (!id) return;
-    setLoading(true);
-    fetchEventById(id)
-      .then((data) => setEvent(data))
-      .finally(() => setLoading(false));
-  }, [id]);
-
-  if (loading) {
-    return (
-      <div className="py-24 text-center">
-        <div className="inline-block animate-spin w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full mb-3" />
-        <p className="text-sm text-pulse-400">Loading verified event intelligence...</p>
-      </div>
-    );
-  }
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const event = await fetchEventById(id);
 
   if (!event) {
-    return (
-      <div className="py-16 text-center max-w-lg mx-auto">
-        <h2 className="text-lg font-bold text-white mb-2">Event Not Found</h2>
-        <p className="text-xs text-pulse-400 mb-6">
-          The requested market event identifier does not exist or has been archived.
-        </p>
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-pulse-900 border border-pulse-800 text-sm text-emerald-400 hover:text-emerald-300"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Return to Dashboard</span>
-        </Link>
-      </div>
-    );
+    return {
+      title: 'Event Not Found | FrabPulse'
+    };
   }
 
+  return {
+    title: `${event.title} | FrabPulse Event Intelligence`,
+    description: event.summary,
+    alternates: {
+      canonical: `https://frabpulse.com/events/${id}`
+    },
+    openGraph: {
+      title: event.title,
+      description: event.summary,
+      type: 'article',
+      publishedTime: event.happenedAt,
+      tags: event.entities
+    }
+  };
+}
+
+export default async function EventDetailPage({ params }: Props) {
+  const { id } = await params;
+  const event = await fetchEventById(id);
+
+  if (!event) {
+    notFound();
+  }
+
+  const topicSlugMap: Record<string, string> = {
+    CENTRAL_BANK: 'central-bank',
+    VIETNAM_REGULATION: 'vietnam-regulation',
+    GEOPOLITICS: 'geopolitics',
+    INFLATION: 'inflation',
+    USD_DXY: 'usd-dxy'
+  };
+  const topicSlug = topicSlugMap[event.eventType] || 'central-bank';
+
+  // Schema.org NewsArticle & BreadcrumbList
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: 'https://frabpulse.com'
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Events',
+            item: 'https://frabpulse.com/#events'
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: event.title,
+            item: `https://frabpulse.com/events/${id}`
+          }
+        ]
+      },
+      {
+        '@type': 'NewsArticle',
+        headline: event.title,
+        description: event.summary,
+        datePublished: event.happenedAt,
+        dateModified: event.detectedAt,
+        mainEntityOfPage: `https://frabpulse.com/events/${id}`,
+        author: {
+          '@type': 'Organization',
+          name: 'FrabPulse Event Intelligence Desk'
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'FrabPulse',
+          logo: {
+            '@type': 'ImageObject',
+            url: 'https://frabpulse.com/logo.png'
+          }
+        },
+        citation: event.sources.map((s) => s.articleUrl)
+      }
+    ]
+  };
+
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-300">
+    <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 animate-in fade-in duration-300">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       {/* Back button */}
       <div>
-        <button
-          onClick={() => router.back()}
+        <Link
+          href="/"
           className="inline-flex items-center gap-2 text-xs font-mono text-pulse-400 hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>BACK TO EVENT STREAM</span>
-        </button>
+        </Link>
       </div>
 
       {/* Header & Meta */}
       <div className="space-y-3 pb-6 border-b border-pulse-800">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <Link
+            href={`/topics/${topicSlug}`}
+            className="px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors"
+          >
             {event.eventType}
-          </span>
+          </Link>
           <span className="text-xs text-pulse-400 flex items-center gap-1 font-mono">
             <Calendar className="w-3.5 h-3.5 text-pulse-500" />
             <span>{new Date(event.happenedAt).toUTCString()}</span>
@@ -92,11 +161,11 @@ export default function EventDetailPage() {
           </span>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
           {event.title}
         </h1>
 
-        <p className="text-sm text-pulse-300 leading-relaxed max-w-3xl">
+        <p className="text-xs sm:text-sm text-pulse-300 leading-relaxed max-w-3xl">
           {event.summary}
         </p>
 
@@ -115,21 +184,21 @@ export default function EventDetailPage() {
       </div>
 
       {/* Epistemological Separation Layer 1: Observed Factual Movements */}
-      <div className="rounded-2xl bg-pulse-900/90 border border-pulse-800 p-6 shadow-xl">
+      <div className="rounded-2xl bg-pulse-900/90 border border-pulse-800 p-4 sm:p-6 shadow-xl">
         <div className="flex items-center gap-2.5 mb-4">
-          <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+          <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
             <Scale className="w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-semibold text-white">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-sm sm:text-base font-semibold text-white">
                 Layer 1: Observed Market Movements
               </h2>
               <span className="px-2 py-0.5 text-[10px] font-mono rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                 EMPIRICAL FACTS
               </span>
             </div>
-            <p className="text-xs text-pulse-400">
+            <p className="text-[11px] sm:text-xs text-pulse-400">
               Mathematical price measurements across the temporal observation window
             </p>
           </div>
@@ -139,6 +208,8 @@ export default function EventDetailPage() {
           {event.relatedAssets.map((rel) => {
             const isUp = rel.deltaPercent >= 0;
             const isVnd = rel.assetCode === 'SJC_VN' || rel.assetCode === 'USD_VND';
+            const assetMeta = ASSET_DEFINITIONS[rel.assetCode];
+            const assetSlug = assetMeta ? assetMeta.slug : 'world';
 
             return (
               <div
@@ -146,9 +217,12 @@ export default function EventDetailPage() {
                 className="p-4 rounded-xl bg-pulse-950/80 border border-pulse-800/80 space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-semibold text-pulse-300">
-                    {rel.assetCode} ({rel.assetName})
-                  </span>
+                  <Link
+                    href={`/gold/${assetSlug}`}
+                    className="text-xs font-mono font-semibold text-emerald-400 hover:underline flex items-center gap-1"
+                  >
+                    <span>{rel.assetCode} ({rel.assetName})</span>
+                  </Link>
                   <div
                     className={`flex items-center text-xs font-mono font-bold px-2 py-0.5 rounded ${
                       isUp
@@ -195,21 +269,21 @@ export default function EventDetailPage() {
       </div>
 
       {/* Epistemological Separation Layer 2: Source Interpretations & Direct Attribution */}
-      <div className="rounded-2xl bg-pulse-900/90 border border-pulse-800 p-6 shadow-xl">
+      <div className="rounded-2xl bg-pulse-900/90 border border-pulse-800 p-4 sm:p-6 shadow-xl">
         <div className="flex items-center gap-2.5 mb-4">
-          <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400">
+          <div className="p-2 sm:p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400">
             <FileText className="w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-semibold text-white">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-sm sm:text-base font-semibold text-white">
                 Layer 2: Source Interpretations & Attribution
               </h2>
               <span className="px-2 py-0.5 text-[10px] font-mono rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
                 VERIFIED OUTLETS
               </span>
             </div>
-            <p className="text-xs text-pulse-400">
+            <p className="text-[11px] sm:text-xs text-pulse-400">
               Direct statements and narrative explanations documented by accredited financial journalists
             </p>
           </div>
@@ -229,11 +303,11 @@ export default function EventDetailPage() {
                   </span>
                 </div>
                 <span className="text-[11px] font-mono text-pulse-500">
-                  {new Date(src.publishedAt).toLocaleTimeString()} UTC
+                  {new Date(src.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} UTC
                 </span>
               </div>
 
-              <h4 className="text-sm font-semibold text-white mb-1.5">{src.articleTitle}</h4>
+              <h3 className="text-sm font-semibold text-white mb-1.5">{src.articleTitle}</h3>
               {src.excerpt && (
                 <blockquote className="text-xs text-pulse-300 italic border-l-2 border-emerald-500/40 pl-3 py-1 my-2 bg-pulse-900/40 rounded-r">
                   &ldquo;{src.excerpt}&rdquo;
@@ -244,7 +318,7 @@ export default function EventDetailPage() {
                 href={src.articleUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs text-pulse-400 hover:text-emerald-400 mt-2 transition-colors font-mono"
+                className="inline-flex items-center gap-1 text-xs text-pulse-400 hover:text-emerald-400 mt-2 transition-colors font-mono min-h-[36px]"
               >
                 <span>Read original dispatch on {src.sourceDomain}</span>
                 <ExternalLink className="w-3 h-3" />
@@ -255,21 +329,21 @@ export default function EventDetailPage() {
       </div>
 
       {/* Epistemological Separation Layer 3: AI-Generated Structured Synthesis */}
-      <div className="rounded-2xl bg-pulse-900/90 border border-purple-500/20 p-6 shadow-xl">
+      <div className="rounded-2xl bg-pulse-900/90 border border-purple-500/20 p-4 sm:p-6 shadow-xl">
         <div className="flex items-center gap-2.5 mb-4">
-          <div className="p-2 rounded-lg bg-purple-500/10 border border-purple-500/30 text-purple-400">
+          <div className="p-2 sm:p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400">
             <Cpu className="w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-semibold text-white">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-sm sm:text-base font-semibold text-white">
                 Layer 3: AI Structured Synthesis
               </h2>
               <span className="px-2 py-0.5 text-[10px] font-mono rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">
                 SOURCE-GROUNDED SYNTHESIS
               </span>
             </div>
-            <p className="text-xs text-pulse-400">
+            <p className="text-[11px] sm:text-xs text-pulse-400">
               Algorithmic extraction of consensus without unverified causal claims
             </p>
           </div>
@@ -277,18 +351,18 @@ export default function EventDetailPage() {
 
         <div className="space-y-4 text-xs text-pulse-200">
           <div className="p-4 rounded-xl bg-pulse-950/80 border border-pulse-800/80">
-            <h4 className="text-xs font-bold text-white mb-1">Factual Context</h4>
+            <h3 className="text-xs font-bold text-white mb-1">Factual Context</h3>
             <p className="leading-relaxed text-pulse-300">{event.synthesis.factualContext}</p>
           </div>
 
           <div className="p-4 rounded-xl bg-pulse-950/80 border border-pulse-800/80">
-            <h4 className="text-xs font-bold text-white mb-1">Source Consensus</h4>
+            <h3 className="text-xs font-bold text-white mb-1">Source Consensus</h3>
             <p className="leading-relaxed text-pulse-300">{event.synthesis.sourceConsensus}</p>
           </div>
 
           {event.synthesis.divergentPoints && event.synthesis.divergentPoints.length > 0 && (
             <div className="p-4 rounded-xl bg-pulse-950/80 border border-pulse-800/80">
-              <h4 className="text-xs font-bold text-white mb-1">Divergent Perspectives</h4>
+              <h3 className="text-xs font-bold text-white mb-1">Divergent Perspectives</h3>
               <ul className="list-disc list-inside space-y-1 text-pulse-400">
                 {event.synthesis.divergentPoints.map((item, idx) => (
                   <li key={idx}>{item}</li>
@@ -299,7 +373,7 @@ export default function EventDetailPage() {
         </div>
       </div>
 
-      {/* Methodology Warning / Guardrail Card */}
+      {/* Methodology Notice */}
       <div className="p-4 rounded-xl bg-pulse-950/90 border border-amber-500/20 flex items-start gap-3">
         <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
         <div className="text-xs text-pulse-300">
