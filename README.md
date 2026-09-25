@@ -192,6 +192,7 @@ $$\text{Gap Percentage (\%)} = \left(\frac{\text{Gap}}{\text{World Gold in VND}}
 - [`docs/DATA_PIPELINE.md`](docs/DATA_PIPELINE.md) — News & market data pipeline, deduplication, and formulas.
 - [`docs/AI_DESIGN.md`](docs/AI_DESIGN.md) — AI abstraction and strict non-hallucinatory guardrails.
 - [`docs/ROADMAP.md`](docs/ROADMAP.md) — Roadmap from V0 to Future Verticals.
+- [`docs/AGENT_PROTOCOL.md`](docs/AGENT_PROTOCOL.md) — Agent Operating Protocol for autonomous engineering quality.
 
 ---
 
