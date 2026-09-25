@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Asset {
+  id              String               @id @default(cuid())
+  code            String               @unique // SJC_VN, DOJI_VN, PNJ_VN, XAU_USD, USD_VND
+  name            String
+  category        String               // GOLD_DOMESTIC, GOLD_INTERNATIONAL, FOREX
+  unit            String               // VND/lượng, USD/oz, VND/USD
+  symbol          String
+  description     String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  snapshots       PriceSnapshot[]
+  assetMovements  EventAssetMovement[]
+
+  @@map("assets")
+}
+
+model MarketProvider {
+  id          String          @id @default(cuid())
+  code        String          @unique // SJC, DOJI, PNJ, KITCO, STATE_BANK
+  name        String
+  websiteUrl  String?
+  isLive      Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  snapshots   PriceSnapshot[]
+
+  @@map("market_providers")
+}
+
+model PriceSnapshot {
+  id                String         @id @default(cuid())
+  assetId           String
+  providerId        String
+  buyPrice          Float
+  sellPrice         Float
+  spread            Float
+  currency          String         // VND, USD
+  timestamp         DateTime
+  change24hAbsolute Float?
+  change24hPercent  Float?
+  isDemo            Boolean        @default(false)
+  createdAt         DateTime       @default(now())
+
+  asset             Asset          @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  provider          MarketProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@index([assetId, timestamp(sort: Desc)])
+  @@index([timestamp(sort: Desc)])
+  @@map("price_snapshots")
+}
+
+model NewsSource {
+  id               String    @id @default(cuid())
+  code             String    @unique // REUTERS, BLOOMBERG, VNEXPRESS, TUOI_TRE, KITCO
+  name             String
+  domain           String
+  credibilityScore Float     @default(0.9)
+  category         String    // FINANCIAL_NEWS, MACRO_AGENCY, DOMESTIC_PRESS, BULLION_EXCHANGE
+  reliabilityNotes String?
+  createdAt        DateTime  @default(now())
+  articles         Article[]
+
+  @@map("news_sources")
+}
+
+model Article {
+  id            String         @id @default(cuid())
+  sourceId      String
+  externalId    String?
+  url           String         @unique
+  title         String
+  summary       String
+  content       String?
+  publishedAt   DateTime
+  crawledAt     DateTime       @default(now())
+  language      String         @default("en")
+
+  source        NewsSource     @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  eventArticles EventArticle[]
+
+  @@index([publishedAt(sort: Desc)])
+  @@map("articles")
+}
+
+model MarketEvent {
+  id                      String               @id @default(cuid())
+  title                   String
+  summary                 String
+  eventType               String               // CENTRAL_BANK, INFLATION, GEOPOLITICS, USD_DXY, GOLD_DEMAND, VIETNAM_REGULATION
+  happenedAt              DateTime
+  detectedAt              DateTime             @default(now())
+  entities                Json                 @default("[]") // Array of string entities
+  confidence              Float                @default(0.9)
+  synthesisFactualContext String
+  synthesisSourceConsensus String
+  synthesisDivergence     Json?                @default("[]")
+  methodologyNotes        String
+  isDemo                  Boolean              @default(false)
+  createdAt               DateTime             @default(now())
+
+  eventArticles           EventArticle[]
+  relatedAssets           EventAssetMovement[]
+
+  @@index([happenedAt(sort: Desc)])
+  @@map("market_events")
+}
+
+model EventArticle {
+  id             String      @id @default(cuid())
+  eventId        String
+  articleId      String
+  relevanceScore Float       @default(1.0)
+  citationRole   String      @default("PRIMARY") // PRIMARY, CONFIRMING, PERSPECTIVE
+  excerpt        String?
+
+  event          MarketEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  article        Article     @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, articleId])
+  @@map("event_articles")
+}
+
+model EventAssetMovement {
+  id                         String      @id @default(cuid())
+  eventId                    String
+  assetId                    String
+  priceBefore                Float
+  priceAfter                 Float
+  deltaAbsolute              Float
+  deltaPercent               Float
+  windowMinutes              Int         @default(30)
+  measuredFrom               DateTime
+  measuredTo                 DateTime
+  isStatisticallySignificant Boolean     @default(true)
+  correlationCaveat          String
+
+  event                      MarketEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  asset                      Asset       @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, assetId])
+  @@map("event_asset_movements")
+}
