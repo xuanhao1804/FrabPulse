@@ -6,15 +6,15 @@
 ---
 
 ## 1. Active Task & Issue
-- **Active Task**: Financial Terminal Pro Chart: High-Density Continuous Cursor Tracking & Investing.com Style Vibe
-- **Active GitHub Issue**: [#15](https://github.com/xuanhao1804/FrabPulse/issues/15) — `[Feature] Financial Terminal Pro Chart: High-Density Continuous Cursor Tracking & Investing.com Style Vibe`
+- **Active Task**: None (Issue #15 closed, chart overhaul complete)
+- **Active GitHub Issue**: None
 - **Current Branch**: `main`
 - **Upstream Branch**: `origin/main`
 
 ---
 
 ## 2. Latest Completed Tasks
-- **Issue #15**: `[Feature] Financial Terminal Pro Chart: High-Density Continuous Cursor Tracking & Investing.com Style Vibe` (Commit pending push).
+- **Issue #15**: `[Feature] Financial Terminal Pro Chart: High-Density Continuous Cursor Tracking & Investing.com Style Vibe` (Commit [`57f88db`](https://github.com/xuanhao1804/FrabPulse/commit/57f88db)).
 - **Issue #14**: `[Feature] Financial Terminal Overhaul: TradingView-Style Pro Chart, Stock Typography & De-cluttered Terminal Header` (Commit [`e4f6408`](https://github.com/xuanhao1804/FrabPulse/commit/e4f6408)).
 - **Issue #13**: `[Feature] Financial Localization Depth: Dual Timezone (ICT/UTC), Locale-Aware Formatters & Gold Unit Converter` (Commit [`3fb9b8a`](https://github.com/xuanhao1804/FrabPulse/commit/3fb9b8a)).
 - **Issue #12**: `[Feature] Multi-Language (i18n) Support (Vietnamese & English)` (Commit [`5531463`](https://github.com/xuanhao1804/FrabPulse/commit/5531463)).
