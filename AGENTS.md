@@ -4,6 +4,41 @@ This file is the **mandatory entry point** for all autonomous agents, Codex sess
 
 ---
 
+## 0. Gate 0: PO, BA & Tech Lead Brainstorming & Requirements Alignment (MANDATORY)
+
+**NEVER jump directly into coding or implementation upon receiving a user request, idea, or feature requirement.**  
+Acting solely as a code generator without thorough product thinking leads to superficial, misaligned, and fragile software. Every meaningful task MUST pass through the triple-lens discovery gate:
+
+1. **Product Owner (PO) Lens — Value & Scope Prioritization**:
+   - **Target Users & Personas**: Who benefits? (e.g., Vietnamese domestic retail gold buyers, bullion dealers, macro economists, international commodity arbitrageurs).
+   - **Problem & Value Proposition**: What real user problem is being solved? Why does this feature matter?
+   - **Scope Boundaries (MoSCoW)**:
+     - *Must-Have*: Core capability required for MVP outcome.
+     - *Should-Have*: High-impact usability enhancements.
+     - *Could-Have*: Future optimizations.
+     - *Won't-Have (Out of scope)*: Explicit anti-goals to prevent scope creep.
+   - **Success Metrics & KPIs**: How do we measure whether the feature is complete and effective?
+
+2. **Business Analyst (BA) Lens — Functional Specs & Edge Cases**:
+   - **User Journeys & Interaction Flows**: Step-by-step user behavior across screen sizes (mobile, tablet, desktop).
+   - **Functional Specifications**: Data models, terminology glossary, formula definitions, input validation rules.
+   - **Localization & Formatting Nuances**: Number conventions (e.g., dot vs. comma separators), currency signs, timezone offsets (ICT UTC+7 vs. UTC vs. NY), multi-language content fallbacks.
+   - **Edge Cases & Failure Scenarios**: Network timeouts, missing translation keys, partial API payloads, stale cache states, extreme market spreads.
+   - **Acceptance Criteria (ACs)**: Written in structured Given-When-Then format before implementation begins.
+
+3. **Tech Lead Lens — Architectural Integrity & Trade-offs**:
+   - **Architecture & Pattern Selection**: Evaluate at least 2–3 viable approaches, comparing trade-offs, complexity, bundle size, and long-term maintainability.
+   - **Performance, Hydration & Zero-FOUC**: Verify SSR/SSG compatibility, avoid hydration mismatches, optimize rendering performance.
+   - **Failure Modes & Circuit Breaking**: Define fallbacks, error boundaries, and degradation paths.
+   - **Test & Verification Matrix**: Specify unit, integration, and E2E test coverage required to prevent regressions.
+
+4. **The Alignment Gate**:
+   - Synthesize the findings into a clear, structured Brainstorming & Requirement Specification.
+   - Highlight open questions, trade-offs, and design options.
+   - **Request and await user review/approval** before writing code or creating issues.
+
+---
+
 ## 1. Start Every Task (Pre-Flight Context Sequence)
 
 Before making file edits or proposing major code changes:

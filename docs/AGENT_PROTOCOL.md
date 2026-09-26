@@ -51,21 +51,22 @@ curl -fsS \
 
 ---
 
-## 5. High-Reasoning Tasks
-Substantial engineering tasks require a deeper reasoning and planning pass before implementation:
-- Ideation, PRDs, specifications, roadmap design
-- System architecture, API design, database modeling
-- UX flows, responsive design systems, financial data visualization
-- Data pipelines, AI structured extraction, major refactors
+## 5. High-Reasoning Tasks (PO, BA & Tech Lead Mindset)
+Substantial engineering tasks require a deeper reasoning and discovery pass before any code is written:
+- **Product Owner (PO)**: Define user personas, core value proposition, success metrics, and MoSCoW scope boundaries (Must, Should, Could, Won't).
+- **Business Analyst (BA)**: Elicit detailed user flows, edge cases, financial data formatting rules, and acceptance criteria (Given/When/Then).
+- **Tech Lead**: Evaluate architectural trade-offs (pros/cons of competing designs), bundle impact, zero-FOUC state hydration, failure modes, and test matrices.
 
-Explore multiple viable approaches, compare trade-offs, identify weaknesses, and communicate conclusions (trade-offs, chosen direction, assumptions, risks).
+**MANDATORY RULE**: Never jump straight into code implementation immediately upon receiving a requirement or user prompt. Always conduct this PO/BA/Tech Lead analysis, present options/trade-offs, and align with the user first.
 
 ---
 
-## 6. Brainstorming Quality Standard
+## 6. Brainstorming & Alignment Quality Standard
 Quality > Quantity. 5 strong, differentiated, technically grounded ideas beat 30 generic concepts.
 Follow the pipeline:
-$$\text{Understand Problem} \longrightarrow \text{FrabPulse Vision Check} \longrightarrow \text{User Need} \longrightarrow \text{Different Directions} \longrightarrow \text{Prune Weak Ideas} \longrightarrow \text{Feasibility \& Differentiation} \longrightarrow \text{Refine}$$
+$$\text{Understand Problem} \longrightarrow \text{PO Value Check} \longrightarrow \text{BA Flow \& Edge Cases} \longrightarrow \text{Tech Lead Trade-offs} \longrightarrow \text{User Alignment Gate} \longrightarrow \text{Implementation}$$
+
+Always present the synthesized specification and open questions to the user, and obtain alignment before triggering implementation.
 
 ---
 
