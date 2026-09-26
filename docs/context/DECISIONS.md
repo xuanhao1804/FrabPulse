@@ -109,6 +109,26 @@
 - **Rationale**: Keeps domain calculations centralized and mathematically authoritative in `@frabpulse/shared`, avoids heavy external date/math libraries, prevents hydration mismatches, and delivers high-utility financial tooling directly into the trader dashboard.
 - **Consequences**: All future price, spread, and date displays must pass active `language` and `timezone` context through locale formatters.
 - **Related Issue**: [#13](https://github.com/xuanhao1804/FrabPulse/issues/13)
-- **Related Commit**: [`268dc81`](https://github.com/xuanhao1804/FrabPulse/commit/268dc81)
+- **Related Commit**: [`3fb9b8a`](https://github.com/xuanhao1804/FrabPulse/commit/3fb9b8a)
+
+---
+
+## ADR-010: Financial Terminal Interface Overhaul: Stock Exchange Typography, De-cluttered Header & Pro Chart with Data Provenance
+- **Date**: 2026-09-26
+- **Context**: User evaluation identified critical UX deficiencies: pervasive monospace font distorted Vietnamese diacritics and created a robotic aesthetic; the chart was overly simplistic without volume, axes, or data source transparency; and the header was cluttered with 9 competing boxed button pills.
+- **Decision**:
+  1. Transition global UI typography to clean, modern sans-serif (`next/font/google` `Inter` with system fallbacks) for all labels, headings, navigation, and descriptions. Restrict `font-mono` exclusively to numeric digits, prices, volumes, and percentages using `tabular-nums`.
+  2. De-clutter navigation header: eliminate bulky boxed pill borders around menu links, replacing them with flat financial text navigation and unifying right-side utility controls into a quiet, cohesive control cluster.
+  3. Overhaul financial chart to professional stock exchange standards (TradingView/SSI/TCBS style):
+     - Integrated volume histogram sub-chart with color-coded buy/sell pressure bars.
+     - Dedicated right Y-axis price scale with 5 horizontal gridlines and a real-time current price tag.
+     - Dedicated bottom X-axis time scale with timezone-aware timeline ticks.
+     - Smooth cubic Bézier spline interpolation in Area mode.
+     - Prominent **Data Provenance & Source Attribution Bar** documenting Kitco spot gold, SJC Miền Nam, Vietcombank FX, and live SSE stream refresh frequency.
+- **Rationale**: Elevates FrabPulse from a prototype to an institutional-grade financial intelligence terminal, delivering transparent source attribution, high usability, and professional aesthetic rigor.
+- **Consequences**: Future chart indicators and UI panels must adhere to the sans-serif UI + tabular-nums data convention and preserve the right-axis coordinate geometry.
+- **Related Issue**: [#14](https://github.com/xuanhao1804/FrabPulse/issues/14)
+- **Related Commit**: Pending commit
+
 
 

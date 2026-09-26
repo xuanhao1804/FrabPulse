@@ -57,21 +57,19 @@ export function Navbar() {
           <div className="flex items-center gap-6">
             <Logo size="md" />
 
-            <nav className="hidden lg:flex items-center gap-1" aria-label="Desktop Navigation">
+            <nav className="hidden lg:flex items-center gap-1 ml-2" aria-label="Desktop Navigation">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
-                const Icon = link.icon;
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none ${
+                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
                       isActive
-                        ? 'bg-emerald-50 text-emerald-700 dark:bg-pulse-800 dark:text-emerald-400 border border-emerald-200/80 dark:border-emerald-500/20 shadow-xs'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-pulse-400 dark:hover:text-white dark:hover:bg-pulse-900'
+                        ? 'bg-slate-100 text-emerald-700 dark:bg-pulse-800/90 dark:text-emerald-400 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-pulse-900/60'
                     }`}
                   >
-                    <Icon className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                     <span>{link.label}</span>
                   </Link>
                 );
@@ -79,19 +77,21 @@ export function Navbar() {
             </nav>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2">
             {/* Real-time SSE Pulse Status Indicator */}
-            <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-slate-100 dark:bg-pulse-900 border border-slate-200 dark:border-pulse-800 text-[11px] sm:text-xs">
+            <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 text-xs text-slate-500 dark:text-slate-400">
               <span
                 className={`w-2 h-2 rounded-full shrink-0 ${
-                  isOnline ? 'bg-emerald-500 dark:bg-emerald-400 animate-pulse' : 'bg-amber-500 dark:bg-amber-400'
+                  isOnline ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'
                 }`}
                 aria-hidden="true"
               />
-              <span className="font-mono text-slate-700 dark:text-pulse-300 text-[10px] sm:text-xs font-semibold">
-                {isOnline ? 'PULSE ONLINE' : 'SYNCING'}
+              <span className="text-[11px] font-semibold tracking-wider uppercase text-slate-600 dark:text-slate-300">
+                {isOnline ? 'LIVE FEED' : 'SYNCING'}
               </span>
             </div>
+
+            <div className="hidden sm:block h-4 w-px bg-slate-200 dark:bg-pulse-800 mx-0.5" />
 
             {/* Timezone Switcher (ICT / UTC) */}
             <TimezoneToggle />
@@ -107,16 +107,15 @@ export function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="View FrabPulse on GitHub"
-              className="hidden sm:flex items-center gap-1.5 text-xs text-slate-600 hover:text-slate-900 dark:text-pulse-400 dark:hover:text-white min-h-[44px] px-3 py-2 rounded-xl bg-slate-100 dark:bg-pulse-900 hover:bg-slate-200 dark:hover:bg-pulse-800 border border-slate-200 dark:border-pulse-800 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-400"
+              className="hidden sm:flex items-center justify-center p-2 rounded-lg border border-slate-200 dark:border-pulse-800/80 bg-slate-50/80 hover:bg-slate-100 dark:bg-pulse-900/60 dark:hover:bg-pulse-800 text-slate-600 dark:text-slate-300 min-h-[38px] min-w-[38px] sm:min-h-[40px] transition-colors focus-visible:ring-2 focus-visible:ring-emerald-400"
             >
-              <GitBranch className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-              <span className="font-medium">GitHub</span>
+              <GitBranch className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             </a>
 
             {/* Mobile Hamburger Button with 44px touch target */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden flex items-center justify-center w-11 h-11 rounded-xl bg-slate-100 dark:bg-pulse-900 border border-slate-200 dark:border-pulse-800 text-slate-700 dark:text-pulse-300 hover:bg-slate-200 dark:hover:bg-pulse-850 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
+              className="lg:hidden flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100 dark:bg-pulse-900/80 border border-slate-200 dark:border-pulse-800 text-slate-700 dark:text-pulse-300 hover:bg-slate-200 dark:hover:bg-pulse-850 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
               aria-label={mobileMenuOpen ? t.nav.closeMenu : t.nav.menu}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"
@@ -162,7 +161,7 @@ export function Navbar() {
                   <GitBranch className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>GitHub Repository</span>
                 </a>
-                <span className="font-mono text-[11px] text-slate-400 dark:text-pulse-500">v0.1.0-alpha</span>
+                <span className="font-sans text-[11px] text-slate-400 dark:text-pulse-500">v0.1.0-alpha</span>
               </div>
             </nav>
           </div>
@@ -176,7 +175,7 @@ export function Navbar() {
       >
         <Link
           href="/"
-          className={`flex flex-col items-center justify-center min-w-[60px] min-h-[44px] py-1 text-[10px] font-mono transition-colors ${
+          className={`flex flex-col items-center justify-center min-w-[60px] min-h-[44px] py-1 text-[11px] font-sans transition-colors ${
             pathname === '/' ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-500 dark:text-pulse-400 hover:text-slate-800 dark:hover:text-pulse-200'
           }`}
         >
@@ -186,7 +185,7 @@ export function Navbar() {
 
         <Link
           href="/gold"
-          className={`flex flex-col items-center justify-center min-w-[60px] min-h-[44px] py-1 text-[10px] font-mono transition-colors ${
+          className={`flex flex-col items-center justify-center min-w-[60px] min-h-[44px] py-1 text-[11px] font-sans transition-colors ${
             pathname.startsWith('/gold') ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-500 dark:text-pulse-400 hover:text-slate-800 dark:hover:text-pulse-200'
           }`}
         >
@@ -196,7 +195,7 @@ export function Navbar() {
 
         <Link
           href="/topics/central-bank"
-          className={`flex flex-col items-center justify-center min-w-[60px] min-h-[44px] py-1 text-[10px] font-mono transition-colors ${
+          className={`flex flex-col items-center justify-center min-w-[60px] min-h-[44px] py-1 text-[11px] font-sans transition-colors ${
             pathname.startsWith('/topics') ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-500 dark:text-pulse-400 hover:text-slate-800 dark:hover:text-pulse-200'
           }`}
         >
@@ -206,7 +205,7 @@ export function Navbar() {
 
         <Link
           href="/methodology"
-          className={`flex flex-col items-center justify-center min-w-[60px] min-h-[44px] py-1 text-[10px] font-mono transition-colors ${
+          className={`flex flex-col items-center justify-center min-w-[60px] min-h-[44px] py-1 text-[11px] font-sans transition-colors ${
             pathname === '/methodology' ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-500 dark:text-pulse-400 hover:text-slate-800 dark:hover:text-pulse-200'
           }`}
         >

@@ -62,7 +62,7 @@ export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
           </div>
         </div>
 
-        <span className="text-xs font-mono font-bold text-slate-600 dark:text-pulse-400 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-pulse-950 border border-slate-200 dark:border-pulse-800">
+        <span className="text-xs font-sans font-bold text-slate-600 dark:text-slate-300 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-pulse-950 border border-slate-200 dark:border-pulse-800">
           {events.length} {t.events.eventsCount}
         </span>
       </div>
@@ -81,16 +81,16 @@ export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
                 <div className="flex items-center gap-2 flex-wrap">
                   <Link
                     href={`/topics/${topicSlug}`}
-                    className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border hover:opacity-80 transition-opacity ${getBadgeStyle(
+                    className={`text-[10px] font-sans font-bold px-2 py-0.5 rounded border hover:opacity-80 transition-opacity tracking-wider ${getBadgeStyle(
                       event.eventType
                     )}`}
                   >
                     {event.eventType}
                   </Link>
 
-                  <span className="text-xs text-slate-500 dark:text-pulse-400 flex items-center gap-1 font-mono">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 font-sans">
                     <Clock className="w-3 h-3 text-slate-400 dark:text-pulse-500" />
-                    <span>
+                    <span className="font-mono tabular-nums">
                       {new Date(event.happenedAt).toLocaleTimeString([], {
                         timeZone: timezone === 'ICT' ? 'Asia/Ho_Chi_Minh' : 'UTC',
                         hour: '2-digit',
@@ -102,9 +102,9 @@ export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
                 </div>
 
                 {/* Convergence confidence */}
-                <div className="flex items-center gap-1 text-[11px] font-mono font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                <div className="flex items-center gap-1 text-[11px] font-sans font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
                   <CheckCircle2 className="w-3 h-3" />
-                  <span>{Math.round(event.confidence * 100)}% {t.events.convergence}</span>
+                  <span><strong className="font-mono">{Math.round(event.confidence * 100)}%</strong> {t.events.convergence}</span>
                 </div>
               </div>
 
@@ -121,13 +121,13 @@ export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
               {/* Bottom Row: Correlated Assets & Verified Sources */}
               <div className="mt-3 pt-3 border-t border-slate-200 dark:border-pulse-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-slate-500 dark:text-pulse-500 text-[10px] uppercase font-mono mr-1 font-bold">{t.events.delta}</span>
+                  <span className="text-slate-500 dark:text-slate-400 text-[10px] uppercase font-sans mr-1 font-bold">{t.events.delta}</span>
                   {event.relatedAssets.map((rel) => {
                     const isUp = rel.deltaPercent >= 0;
                     return (
                       <span
                         key={rel.assetCode}
-                        className={`font-mono text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded ${
+                        className={`font-mono text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded tabular-nums ${
                           isUp
                             ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20'
                             : 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20'
@@ -140,9 +140,9 @@ export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
                 </div>
 
                 <div className="flex items-center justify-between sm:justify-end gap-3 pt-1 sm:pt-0">
-                  <span className="text-slate-500 dark:text-pulse-400 text-[11px] flex items-center gap-1 font-mono">
+                  <span className="text-slate-500 dark:text-slate-400 text-[11px] flex items-center gap-1 font-sans">
                     <ShieldCheck className="w-3.5 h-3.5 text-slate-400 dark:text-pulse-400" />
-                    <span>{event.sources.length} {t.events.sourcesCount}</span>
+                    <span><strong className="font-mono">{event.sources.length}</strong> {t.events.sourcesCount}</span>
                   </span>
 
                   <Link

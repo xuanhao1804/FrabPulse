@@ -154,53 +154,53 @@ export function GoldUnitConverter({
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
         {/* Lượng (Tael) */}
         <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-pulse-950/70 border border-slate-200/80 dark:border-pulse-800/80">
-          <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 block mb-0.5">
+          <span className="text-[11px] font-sans font-medium text-slate-500 dark:text-slate-400 block mb-0.5">
             {t.converter.unitLuong}
           </span>
           <span className="text-lg sm:text-xl font-mono font-extrabold text-slate-900 dark:text-white tabular-nums block truncate">
             {formatNumberLocale(weights.luong, locale, 4)}
           </span>
-          <span className="text-[10px] font-mono text-slate-400 dark:text-pulse-500 block">
-            = {formatNumberLocale(weights.chi, locale, 2)} chỉ
+          <span className="text-[10px] font-sans text-slate-400 dark:text-pulse-500 block">
+            = <span className="font-mono">{formatNumberLocale(weights.chi, locale, 2)}</span> chỉ
           </span>
         </div>
 
         {/* Chỉ */}
         <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-pulse-950/70 border border-slate-200/80 dark:border-pulse-800/80">
-          <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 block mb-0.5">
+          <span className="text-[11px] font-sans font-medium text-slate-500 dark:text-slate-400 block mb-0.5">
             {t.converter.unitChi}
           </span>
           <span className="text-lg sm:text-xl font-mono font-extrabold text-slate-900 dark:text-white tabular-nums block truncate">
             {formatNumberLocale(weights.chi, locale, 3)}
           </span>
-          <span className="text-[10px] font-mono text-slate-400 dark:text-pulse-500 block">
+          <span className="text-[10px] font-sans text-slate-400 dark:text-pulse-500 block">
             = 0.1 lượng
           </span>
         </div>
 
         {/* Troy Ounce (oz) */}
         <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-pulse-950/70 border border-slate-200/80 dark:border-pulse-800/80">
-          <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 block mb-0.5">
+          <span className="text-[11px] font-sans font-medium text-slate-500 dark:text-slate-400 block mb-0.5">
             {t.converter.unitOz}
           </span>
           <span className="text-lg sm:text-xl font-mono font-extrabold text-sky-700 dark:text-sky-400 tabular-nums block truncate">
             {formatNumberLocale(weights.troyOz, locale, 4)}
           </span>
-          <span className="text-[10px] font-mono text-slate-400 dark:text-pulse-500 block">
+          <span className="text-[10px] font-sans text-slate-400 dark:text-pulse-500 block">
             = 31.1035 grams
           </span>
         </div>
 
         {/* Grams & Kg */}
         <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-pulse-950/70 border border-slate-200/80 dark:border-pulse-800/80">
-          <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 block mb-0.5">
+          <span className="text-[11px] font-sans font-medium text-slate-500 dark:text-slate-400 block mb-0.5">
             {t.converter.unitGram}
           </span>
           <span className="text-lg sm:text-xl font-mono font-extrabold text-slate-900 dark:text-white tabular-nums block truncate">
             {formatNumberLocale(weights.grams, locale, 2)} g
           </span>
-          <span className="text-[10px] font-mono text-slate-400 dark:text-pulse-500 block">
-            = {formatNumberLocale(weights.kg, locale, 4)} kg
+          <span className="text-[10px] font-sans text-slate-400 dark:text-pulse-500 block">
+            = <span className="font-mono">{formatNumberLocale(weights.kg, locale, 4)}</span> kg
           </span>
         </div>
       </div>
@@ -209,7 +209,7 @@ export function GoldUnitConverter({
       <div className="p-4 sm:p-5 rounded-xl bg-linear-to-r from-emerald-500/10 via-sky-500/5 to-amber-500/10 border border-emerald-500/20 dark:border-emerald-500/30">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <span className="text-[11px] font-mono text-slate-600 dark:text-pulse-300 block mb-1">
+            <span className="text-[11px] font-sans font-semibold text-slate-600 dark:text-slate-300 block mb-1">
               {t.converter.domesticValue} (SJC):
             </span>
             <span className="text-lg sm:text-xl font-mono font-extrabold text-slate-900 dark:text-white tabular-nums block">
@@ -218,19 +218,19 @@ export function GoldUnitConverter({
           </div>
 
           <div>
-            <span className="text-[11px] font-mono text-slate-600 dark:text-pulse-300 block mb-1">
+            <span className="text-[11px] font-sans font-semibold text-slate-600 dark:text-slate-300 block mb-1">
               {t.converter.worldValue} (XAU):
             </span>
             <span className="text-lg sm:text-xl font-mono font-extrabold text-sky-700 dark:text-sky-400 tabular-nums block">
               {formatPriceLocale(valuation.worldVnd, 'VND', locale)}
             </span>
-            <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 block">
-              ≈ {formatPriceLocale(valuation.worldUsd, 'USD', locale)}
+            <span className="text-[11px] font-sans text-slate-500 dark:text-slate-400 block">
+              ≈ <span className="font-mono">{formatPriceLocale(valuation.worldUsd, 'USD', locale)}</span>
             </span>
           </div>
 
           <div>
-            <span className="text-[11px] font-mono text-slate-600 dark:text-pulse-300 block mb-1">
+            <span className="text-[11px] font-sans font-semibold text-slate-600 dark:text-slate-300 block mb-1">
               {t.converter.arbitrageSpread}:
             </span>
             <span className="text-lg sm:text-xl font-mono font-extrabold text-amber-700 dark:text-amber-400 tabular-nums block">

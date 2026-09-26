@@ -103,7 +103,15 @@ export const translations = {
       crosshairHint: 'Rê chuột trên biểu đồ để xem điểm giá · Nhấp ghim số để xem sự kiện liên quan',
       utcSync: 'ĐỒNG BỘ UTC',
       inspectEvent: 'Chi tiết sự kiện',
-      associatedDelta: 'Biến động ghi nhận:'
+      associatedDelta: 'Biến động ghi nhận:',
+      provenanceTitle: 'Minh Bạch Nguồn Gốc Dữ Liệu & Quy Chuẩn',
+      provenanceSource: 'Nguồn cấp trực tiếp: Kitco Spot Gold (XAU/USD) & SJC Miền Nam',
+      provenanceFx: 'Tỷ giá chuyển khoản VCB: 25.440 ₫/USD',
+      provenanceLatency: 'Độ trễ: < 60s (SSE Live Stream)',
+      provenanceDesc: 'Biểu đồ kỹ thuật phản ánh dữ liệu giao dịch thực tế. Chênh lệch (Gold Gap) tính theo công thức quy chuẩn vật chất 1 lượng = 37.5g = 1.20565 troy ounce.',
+      volumePane: 'Khối lượng giao dịch',
+      hideProvenance: 'Ẩn chi tiết',
+      viewProvenance: 'Nguồn dữ liệu & Tỷ giá'
     },
     events: {
       title: 'Dòng Sự Kiện Thị Trường Thời Gian Thực',
@@ -268,7 +276,15 @@ export const translations = {
       crosshairHint: 'Hover on chart for crosshair · Click numbered pins (1, 2, 3) to inspect event movements',
       utcSync: 'UTC SYNCHRONIZED',
       inspectEvent: 'Inspect Event',
-      associatedDelta: 'Associated Delta:'
+      associatedDelta: 'Associated Delta:',
+      provenanceTitle: 'Data Provenance & Market Conventions',
+      provenanceSource: 'Live Feeds: Kitco Spot Gold (XAU/USD) & SJC Vietnam',
+      provenanceFx: 'VCB Transfer FX Rate: 25,440 VND/USD',
+      provenanceLatency: 'Latency: < 60s (SSE Live Stream)',
+      provenanceDesc: 'Technical chart reflects verified transaction prices. Gold spread calculated using physical conversion 1 tael = 37.5g = 1.20565 troy ounces.',
+      volumePane: 'Trading Volume',
+      hideProvenance: 'Hide details',
+      viewProvenance: 'Sources & FX'
     },
     events: {
       title: 'Real-Time Market Event Stream',

@@ -10,10 +10,10 @@ export function ThemeToggle({ className = '' }: { className?: string }) {
   return (
     <button
       onClick={toggleTheme}
-      className={`relative inline-flex items-center justify-center p-2 rounded-xl transition-all duration-200 min-h-[44px] min-w-[44px] focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none border ${
+      className={`relative inline-flex items-center justify-center p-2 rounded-lg transition-all duration-200 min-h-[38px] min-w-[38px] sm:min-h-[40px] focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none border ${
         resolvedTheme === 'dark'
-          ? 'bg-pulse-900 hover:bg-pulse-850 text-amber-300 border-pulse-800 hover:border-pulse-700'
-          : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200 shadow-sm'
+          ? 'bg-pulse-900/60 hover:bg-pulse-800 text-amber-300 border-pulse-800/80 hover:border-pulse-700'
+          : 'bg-slate-50/80 hover:bg-slate-100 text-slate-700 border-slate-200 shadow-2xs'
       } ${className}`}
       aria-label={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} mode`}
       title={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} mode`}

@@ -1,10 +1,17 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { DemoBanner } from '../components/brand/DemoBanner';
 import { ThemeProvider } from '../components/theme/ThemeProvider';
 import { LanguageProvider } from '../lib/i18n/LanguageContext';
+
+const inter = Inter({
+  subsets: ['latin', 'vietnamese'],
+  display: 'swap',
+  variable: '--font-sans'
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://frabpulse.com'),
@@ -115,7 +122,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-slate-50 dark:bg-pulse-950 text-slate-800 dark:text-slate-100 antialiased bg-lab-grid selection:bg-emerald-500/30 selection:text-emerald-500 pb-16 md:pb-0 transition-colors duration-200">
+      <body className={`${inter.variable} min-h-screen bg-slate-50 dark:bg-pulse-950 text-slate-800 dark:text-slate-100 font-sans antialiased bg-lab-grid selection:bg-emerald-500/30 selection:text-emerald-500 pb-16 md:pb-0 transition-colors duration-200`}>
         <ThemeProvider>
           <LanguageProvider>
             <DemoBanner />

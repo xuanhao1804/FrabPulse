@@ -46,7 +46,7 @@ export function ProviderCard({ price }: ProviderCardProps) {
               <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-pulse-800 text-slate-700 dark:text-pulse-300 border border-slate-200 dark:border-pulse-700">
                 {meta ? meta.symbol : price.assetCode}
               </span>
-              <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 truncate max-w-[120px]" title={price.providerCode}>
+              <span className="text-[11px] font-sans font-medium text-slate-500 dark:text-slate-400 truncate max-w-[120px]" title={price.providerCode}>
                 {price.providerCode}
               </span>
               <MarketHealthBadge
@@ -98,10 +98,10 @@ export function ProviderCard({ price }: ProviderCardProps) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-slate-100 dark:border-pulse-800/40 text-[11px] text-slate-500 dark:text-pulse-400">
-        <span className="flex items-center gap-1 truncate" title={absoluteDates ? `${absoluteDates.ict} | ${absoluteDates.utc}` : undefined}>
+      <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-slate-100 dark:border-pulse-800/40 text-[11px] text-slate-500 dark:text-slate-400">
+        <span className="flex items-center gap-1 truncate font-sans" title={absoluteDates ? `${absoluteDates.ict} | ${absoluteDates.utc}` : undefined}>
           <Layers className="w-3 h-3 text-slate-400 dark:text-pulse-500 shrink-0" />
-          <span className="truncate font-mono">{t.providers.spread}: {formatSpread(price.spread)}</span>
+          <span className="truncate">{t.providers.spread}: <strong className="font-mono tabular-nums text-slate-700 dark:text-slate-300">{formatSpread(price.spread)}</strong></span>
           {relativeFreshness && (
             <span className="text-slate-400 dark:text-pulse-500 text-[10px] hidden xs:inline truncate">
               · {relativeFreshness}
@@ -111,7 +111,7 @@ export function ProviderCard({ price }: ProviderCardProps) {
 
         <Link
           href={`/gold/${slug}`}
-          className="text-emerald-700 dark:text-emerald-400/90 hover:text-emerald-600 dark:hover:text-emerald-300 font-mono text-[11px] font-semibold flex items-center gap-0.5 shrink-0 min-h-[36px]"
+          className="text-emerald-700 dark:text-emerald-400/90 hover:text-emerald-600 dark:hover:text-emerald-300 font-sans text-xs font-semibold flex items-center gap-0.5 shrink-0 min-h-[36px]"
           aria-label={`View detailed historical quotes for ${meta?.name || price.assetCode}`}
         >
           <span>{t.providers.details}</span>

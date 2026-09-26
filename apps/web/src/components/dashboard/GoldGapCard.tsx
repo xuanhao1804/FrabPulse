@@ -40,7 +40,7 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
               <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
                 {t.gapCard.title}
               </h2>
-              <span className={`px-2 py-0.5 text-[10px] font-mono font-bold rounded-lg border ${spreadCategory.color}`}>
+              <span className={`px-2 py-0.5 text-[10px] font-sans font-bold tracking-wider rounded-lg border ${spreadCategory.color}`}>
                 {spreadCategory.label}
               </span>
               <MarketHealthBadge
@@ -57,7 +57,7 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
 
         <button
           onClick={() => setShowFormula(!showFormula)}
-          className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-300 min-h-[40px] px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-pulse-800/80 dark:hover:bg-pulse-800 border border-slate-200 dark:border-pulse-700 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
+          className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-300 min-h-[38px] px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-pulse-800/80 dark:hover:bg-pulse-800 border border-slate-200 dark:border-pulse-700 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
           aria-expanded={showFormula}
           aria-label={t.gapCard.inspectFormula}
         >
@@ -71,7 +71,7 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Metric 1: Arbitrage Spread */}
         <div className="p-4 rounded-xl bg-slate-50 dark:bg-pulse-950/70 border border-slate-200/80 dark:border-pulse-800/80">
-          <span className="text-xs font-medium text-slate-500 dark:text-pulse-400 block mb-1">
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400 block mb-1">
             {t.gapCard.arbitrageSpread}
           </span>
           <div className="flex items-baseline gap-1.5">
@@ -79,14 +79,14 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
               +{formatPriceLocale(gapData.gapVnd, 'VND', locale, true)}
             </span>
           </div>
-          <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 mt-1 block truncate">
-            {formatPriceLocale(gapData.gapVnd, 'VND', locale, false)} / {locale === 'vi' ? 'lượng' : 'tael'}
+          <span className="text-[11px] font-sans text-slate-500 dark:text-slate-400 mt-1 block truncate">
+            <span className="font-mono tabular-nums">{formatPriceLocale(gapData.gapVnd, 'VND', locale, false)}</span> / {locale === 'vi' ? 'lượng' : 'tael'}
           </span>
         </div>
 
         {/* Metric 2: Percentage Premium */}
         <div className="p-4 rounded-xl bg-slate-50 dark:bg-pulse-950/70 border border-slate-200/80 dark:border-pulse-800/80">
-          <span className="text-xs font-medium text-slate-500 dark:text-pulse-400 block mb-1">
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400 block mb-1">
             {t.gapCard.domesticPremium}
           </span>
           <div className="flex items-baseline gap-1.5">
@@ -95,14 +95,14 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
               <ArrowUpRight className="w-5 h-5 ml-0.5 shrink-0" />
             </span>
           </div>
-          <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 mt-1 block">
+          <span className="text-[11px] font-sans text-slate-500 dark:text-slate-400 mt-1 block">
             {t.gapCard.arbitrageSpread}
           </span>
         </div>
 
         {/* Metric 3: Domestic SJC Benchmark */}
         <div className="p-4 rounded-xl bg-slate-50 dark:bg-pulse-950/70 border border-slate-200/80 dark:border-pulse-800/80">
-          <span className="text-xs font-medium text-slate-500 dark:text-pulse-400 block mb-1">
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400 block mb-1">
             {t.gapCard.sjcBenchmark}
           </span>
           <div className="flex items-baseline gap-1.5">
@@ -110,14 +110,14 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
               {formatPriceLocale(gapData.domesticPriceVndPerTael, 'VND', locale, true)}
             </span>
           </div>
-          <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 mt-1 block truncate">
-            {formatPriceLocale(gapData.domesticPriceVndPerTael, 'VND', locale, false)} / {locale === 'vi' ? 'lượng' : 'tael'}
+          <span className="text-[11px] font-sans text-slate-500 dark:text-slate-400 mt-1 block truncate">
+            <span className="font-mono tabular-nums">{formatPriceLocale(gapData.domesticPriceVndPerTael, 'VND', locale, false)}</span> / {locale === 'vi' ? 'lượng' : 'tael'}
           </span>
         </div>
 
         {/* Metric 4: Converted World Gold */}
         <div className="p-4 rounded-xl bg-slate-50 dark:bg-pulse-950/70 border border-slate-200/80 dark:border-pulse-800/80">
-          <span className="text-xs font-medium text-slate-500 dark:text-pulse-400 block mb-1">
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400 block mb-1">
             {t.gapCard.worldBenchmark}
           </span>
           <div className="flex items-baseline gap-1.5">
@@ -125,8 +125,8 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
               {formatPriceLocale(gapData.worldPriceVndPerTael, 'VND', locale, true)}
             </span>
           </div>
-          <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 mt-1 block truncate">
-            {formatPriceLocale(gapData.xauUsd, 'USD', locale, false)}/oz @ {formatPriceLocale(gapData.usdVnd, 'VND', locale, false)}
+          <span className="text-[11px] font-sans text-slate-500 dark:text-slate-400 mt-1 block truncate">
+            <span className="font-mono tabular-nums">{formatPriceLocale(gapData.xauUsd, 'USD', locale, false)}/oz</span> @ <span className="font-mono tabular-nums">{formatPriceLocale(gapData.usdVnd, 'VND', locale, false)}</span>
           </span>
         </div>
       </div>
