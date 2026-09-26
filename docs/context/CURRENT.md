@@ -6,15 +6,15 @@
 ---
 
 ## 1. Active Task & Issue
-- **Active Task**: Financial Terminal Overhaul: TradingView-Style Pro Chart, Stock Typography & De-cluttered Terminal Header
-- **Active GitHub Issue**: [#14](https://github.com/xuanhao1804/FrabPulse/issues/14) — `[Feature] Financial Terminal Overhaul: TradingView-Style Pro Chart, Stock Typography & De-cluttered Terminal Header`
+- **Active Task**: None (Milestone 1.5 complete, Issue #14 closed)
+- **Active GitHub Issue**: None
 - **Current Branch**: `main`
 - **Upstream Branch**: `origin/main`
 
 ---
 
 ## 2. Latest Completed Tasks
-- **Issue #14**: `[Feature] Financial Terminal Overhaul: TradingView-Style Pro Chart, Stock Typography & De-cluttered Terminal Header` (Commit pending push).
+- **Issue #14**: `[Feature] Financial Terminal Overhaul: TradingView-Style Pro Chart, Stock Typography & De-cluttered Terminal Header` (Commit [`e4f6408`](https://github.com/xuanhao1804/FrabPulse/commit/e4f6408)).
 - **Issue #13**: `[Feature] Financial Localization Depth: Dual Timezone (ICT/UTC), Locale-Aware Formatters & Gold Unit Converter` (Commit [`3fb9b8a`](https://github.com/xuanhao1804/FrabPulse/commit/3fb9b8a)).
 - **Issue #12**: `[Feature] Multi-Language (i18n) Support (Vietnamese & English)` (Commit [`5531463`](https://github.com/xuanhao1804/FrabPulse/commit/5531463)).
 - **Issue #1**: `[Coordination] Establish Repository Context Continuity System & Gate 0 Protocol` (Commits [`f31d5ce`](https://github.com/xuanhao1804/FrabPulse/commit/f31d5ce), [`bc025a9`](https://github.com/xuanhao1804/FrabPulse/commit/bc025a9), [`fd220d1`](https://github.com/xuanhao1804/FrabPulse/commit/fd220d1)).
