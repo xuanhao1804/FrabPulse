@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { NewsService } from '../services/news.service';
 
 @Controller('news')
@@ -11,7 +11,11 @@ export class NewsController {
   }
 
   @Get('articles')
-  async getArticles() {
-    return this.newsService.getLatestArticles();
+  async getArticles(
+    @Query('limit') limit?: string,
+    @Query('q') query?: string
+  ) {
+    const numLimit = limit ? Math.min(Math.max(parseInt(limit, 10) || 20, 1), 100) : 25;
+    return this.newsService.getLatestArticles(numLimit, query);
   }
 }
