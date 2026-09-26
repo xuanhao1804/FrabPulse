@@ -3,17 +3,18 @@
 ## Version Overview
 
 ```text
-V0: Foundation (Monorepo, CI, Database, API Shell, UI Design System)
+V0: Foundation (Monorepo, CI, Database, API Shell, UI Design System) [COMPLETED]
  │
- ├── V1: Gold Pulse MVP (SJC, DOJI, PNJ, XAU/USD, USD/VND, Gap Engine) ◄ [CURRENT TARGET]
+ ├── V1: Gold Pulse MVP (SJC, DOJI, PNJ, XAU/USD, USD/VND, Gap Engine) [COMPLETED]
  │    │
- │    ├── V1.5: News Pipeline (Ingestion, Deduplication, Verified Sources)
+ │    ├── V1.5: Live Ingestion & Data Resilience (Live Adapters, SJC/Spot, RSS) ◄ [CURRENT ACTIVE TARGET]
+ │    │    └── Detailed Spec: docs/SPEC_MILESTONES_AND_TASKS.md
  │    │
- │    ├── V2: AI Intelligence (Structured Extraction, Source Attribution, Synthesis)
+ │    ├── V2: Automated Event Intelligence (Clustering, Strict 3-Layer AI Synthesis)
  │    │
- │    └── V2.5: Event ↔ Price Correlation (Temporal Engine, Interactive Chart Markers)
+ │    └── V2.5: Event ↔ Price Correlation Engine (Temporal Windows, Interactive Markers)
  │
- ├── V3: Community & User Features (Alerts, Saved Events, Webhooks)
+ ├── V3: Community & User Features (Watchlists, Threshold Alerts, Webhooks)
  │
  └── Future Verticals:
       ├── Market Pulse (Equities, VN-Index, DXY, Macro Rates)
