@@ -1,6 +1,8 @@
 import React from 'react';
 import { PriceSnapshot, ASSET_DEFINITIONS, formatVndMillions, formatUsd, formatPercent } from '@frabpulse/shared';
-import { ArrowUpRight, ArrowDownRight, Layers, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, ArrowDownRight, Layers, ChevronRight, Clock } from 'lucide-react';
+import { MarketHealthBadge } from './MarketHealthBadge';
+import { formatTimeAgo, formatAbsoluteDateTime } from '../../lib/utils';
 import Link from 'next/link';
 
 interface ProviderCardProps {
@@ -13,6 +15,10 @@ export function ProviderCard({ price }: ProviderCardProps) {
   const isDomesticGold = price.currency === 'VND' && price.assetCode !== 'USD_VND';
   const isForex = price.assetCode === 'USD_VND';
   const slug = meta ? meta.slug : price.assetCode.toLowerCase();
+
+  const syncTime = price.lastFetchedAt || price.timestamp;
+  const relativeFreshness = syncTime ? formatTimeAgo(syncTime) : null;
+  const absoluteDates = syncTime ? formatAbsoluteDateTime(syncTime) : null;
 
   const formatPrice = (amount: number) => {
     if (isDomesticGold) return formatVndMillions(amount);
@@ -29,28 +35,24 @@ export function ProviderCard({ price }: ProviderCardProps) {
   return (
     <div className="relative rounded-2xl bg-pulse-900/90 border border-pulse-800 hover:border-pulse-700 p-4 sm:p-5 transition-all hover:shadow-lg hover:shadow-black/20 group flex flex-col justify-between">
       <div>
-        <div className="flex items-start justify-between mb-3">
-          <div>
-            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+        <div className="flex items-start justify-between mb-3 gap-2">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap mb-1">
               <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-pulse-800 text-pulse-300">
                 {meta ? meta.symbol : price.assetCode}
               </span>
-              <span className="text-[11px] sm:text-xs text-pulse-400">{price.providerCode}</span>
-              {price.sourceType === 'LIVE_FEED' && (
-                <span className="inline-flex items-center gap-1 text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-medium">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  LIVE
-                </span>
-              )}
-              {price.sourceType === 'CACHED' && (
-                <span className="inline-flex items-center gap-1 text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-medium">
-                  CACHED
-                </span>
-              )}
+              <span className="text-[11px] font-mono text-pulse-400 truncate max-w-[120px]" title={price.providerCode}>
+                {price.providerCode}
+              </span>
+              <MarketHealthBadge
+                sourceType={price.sourceType}
+                lastSync={syncTime}
+                compact
+              />
             </div>
             <Link
               href={`/gold/${slug}`}
-              className="text-sm font-semibold text-white mt-1 group-hover:text-emerald-300 transition-colors block hover:underline underline-offset-2"
+              className="text-sm font-semibold text-white group-hover:text-emerald-300 transition-colors block hover:underline underline-offset-2 truncate"
             >
               {meta ? meta.name : price.assetCode}
             </Link>
@@ -92,9 +94,14 @@ export function ProviderCard({ price }: ProviderCardProps) {
       </div>
 
       <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-pulse-800/40 text-[11px] text-pulse-400">
-        <span className="flex items-center gap-1 truncate">
+        <span className="flex items-center gap-1 truncate" title={absoluteDates ? `${absoluteDates.ict} | ${absoluteDates.utc}` : undefined}>
           <Layers className="w-3 h-3 text-pulse-500 shrink-0" />
           <span className="truncate">Spread: {formatSpread(price.spread)}</span>
+          {relativeFreshness && (
+            <span className="text-pulse-500 text-[10px] hidden xs:inline truncate">
+              · {relativeFreshness}
+            </span>
+          )}
         </span>
 
         <Link

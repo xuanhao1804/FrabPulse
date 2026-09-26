@@ -5,20 +5,23 @@ import {
   PriceSnapshot,
   GoldGapAnalysis,
   MarketEvent,
-  PriceCandle
+  PriceCandle,
+  MarketHealthStatus
 } from '@frabpulse/shared';
 import {
   fetchLatestPrices,
   fetchGoldGap,
   fetchHistoricalChart,
-  fetchMarketEvents
+  fetchMarketEvents,
+  fetchMarketHealth
 } from '../../lib/api-client';
 import { usePulseStream } from '../../lib/use-pulse-stream';
+import { MarketHealthBadge } from './MarketHealthBadge';
 import { GoldGapCard } from './GoldGapCard';
 import { ProviderCard } from './ProviderCard';
 import { PriceEventChart } from '../chart/PriceEventChart';
 import { LiveEventsFeed } from './LiveEventsFeed';
-import { RefreshCw, Layers, Compass, ArrowRight, ShieldCheck } from 'lucide-react';
+import { RefreshCw, Layers, Compass, ArrowRight, Activity, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
 interface DashboardClientProps {
@@ -41,26 +44,38 @@ export function DashboardClient({
   const [events, setEvents] = useState<MarketEvent[]>(initialEvents);
   const [xauCandles, setXauCandles] = useState<PriceCandle[]>(initialXauCandles);
   const [sjcCandles, setSjcCandles] = useState<PriceCandle[]>(initialSjcCandles);
+  const [health, setHealth] = useState<MarketHealthStatus | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const { latestPriceTick, latestGap, latestEvent } = usePulseStream();
+  const { status, latestPriceTick, latestGap, latestEvent, lastHeartbeat } = usePulseStream();
+
+  // Load health status on mount
+  useEffect(() => {
+    fetchMarketHealth().then(setHealth).catch(() => {});
+    const interval = setInterval(() => {
+      fetchMarketHealth().then(setHealth).catch(() => {});
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Manual refresh
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
-      const [p, g, evts, xau, sjc] = await Promise.all([
+      const [p, g, evts, xau, sjc, h] = await Promise.all([
         fetchLatestPrices(),
         fetchGoldGap(),
         fetchMarketEvents(),
         fetchHistoricalChart('XAU_USD'),
-        fetchHistoricalChart('SJC_VN')
+        fetchHistoricalChart('SJC_VN'),
+        fetchMarketHealth()
       ]);
       setPrices(p);
       setGapData(g);
       setEvents(evts);
       setXauCandles(xau);
       setSjcCandles(sjc);
+      setHealth(h);
     } finally {
       setIsRefreshing(false);
     }
@@ -94,16 +109,44 @@ export function DashboardClient({
 
   return (
     <div className="space-y-6 sm:space-y-8">
-      {/* Action Header */}
+      {/* Reconnection Status Banner (when SSE disconnected or degraded) */}
+      {status !== 'ONLINE' && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="rounded-xl bg-amber-500/10 border border-amber-500/20 px-3 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between gap-3 text-xs text-amber-300"
+        >
+          <div className="flex items-center gap-2 truncate">
+            <RefreshCw className="w-3.5 h-3.5 shrink-0 animate-spin text-amber-400" />
+            <span className="truncate">
+              {status === 'CONNECTING'
+                ? 'Reconnecting to real-time market ingestion worker...'
+                : 'Real-time stream offline. Serving cached quotes with automatic background retry.'}
+            </span>
+          </div>
+          <button
+            onClick={handleRefresh}
+            className="text-[11px] font-mono underline hover:text-white shrink-0"
+          >
+            Retry now
+          </button>
+        </div>
+      )}
+
+      {/* Action Header & Live Health Radar */}
       <div className="flex items-center justify-between flex-wrap gap-3 pb-2 border-b border-pulse-800/60">
-        <div className="flex items-center gap-2">
-          <span className="px-2 py-1 text-[10px] sm:text-xs font-mono font-bold tracking-wider rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="px-2 py-1 text-[10px] sm:text-xs font-mono font-bold tracking-wider rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1 shrink-0">
             <Compass className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
             <span>VERTICAL 01</span>
           </span>
-          <span className="text-xs text-pulse-400">
-            Gold Markets & Associated Events
-          </span>
+
+          <MarketHealthBadge
+            status={health?.status}
+            streamStatus={status}
+            lastSync={health?.lastSync || lastHeartbeat}
+            circuitBreakers={health?.circuitBreakers}
+          />
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end">
