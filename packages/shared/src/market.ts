@@ -80,6 +80,7 @@ export interface MarketHealthStatus {
   liveAssetCount: number;
   totalAssetCount: number;
   activeSources: string[];
+  circuitBreakers?: Record<string, { state: string; failureCount: number; resetTimeoutMs: number }>;
 }
 
 export interface PriceSnapshot {

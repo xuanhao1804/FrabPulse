@@ -3,6 +3,8 @@ import { AssetCode, PriceSnapshot, ProviderDataSource } from '@frabpulse/shared'
 import { IMarketDataProvider } from '../interfaces/market-data-provider.interface';
 import { LATEST_SEED_PRICES } from '../../../database/seed-data';
 
+import { CircuitBreaker } from '../../../common/circuit-breaker';
+
 interface VangTodayItem {
   name: string;
   buy: number;
@@ -26,12 +28,25 @@ export class VietnamGoldProvider implements IMarketDataProvider {
   readonly providerCode = 'VIETNAM_DOMESTIC_LIVE';
   readonly supportedAssets: AssetCode[] = ['SJC_VN', 'DOJI_VN', 'PNJ_VN'];
 
+  private readonly breaker = new CircuitBreaker({
+    name: 'VangTodayDomestic',
+    failureThreshold: 3,
+    resetTimeoutMs: 300_000
+  });
+
   private cachedPrices: Map<AssetCode, PriceSnapshot> = new Map();
   private lastFetchedAt: string | null = null;
 
+  getCircuitBreaker(): CircuitBreaker {
+    return this.breaker;
+  }
+
   async fetchLatestPrices(): Promise<PriceSnapshot[]> {
     try {
-      const livePrices = await this.fetchFromLiveApi();
+      const livePrices = await this.breaker.execute(
+        () => this.fetchFromLiveApi(),
+        () => []
+      );
       if (livePrices.length > 0) {
         livePrices.forEach((p) => this.cachedPrices.set(p.assetCode, p));
         this.lastFetchedAt = new Date().toISOString();

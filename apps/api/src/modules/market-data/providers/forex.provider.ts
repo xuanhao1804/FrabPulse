@@ -3,17 +3,32 @@ import { AssetCode, PriceSnapshot, ProviderDataSource } from '@frabpulse/shared'
 import { IMarketDataProvider } from '../interfaces/market-data-provider.interface';
 import { LATEST_SEED_PRICES } from '../../../database/seed-data';
 
+import { CircuitBreaker } from '../../../common/circuit-breaker';
+
 @Injectable()
 export class ForexProvider implements IMarketDataProvider {
   private readonly logger = new Logger(ForexProvider.name);
   readonly providerCode = 'FOREX_LIVE_AGGREGATOR';
   readonly supportedAssets: AssetCode[] = ['USD_VND'];
 
+  private readonly breaker = new CircuitBreaker({
+    name: 'ForexRatesAggregator',
+    failureThreshold: 3,
+    resetTimeoutMs: 300_000
+  });
+
   private cachedSnapshot: PriceSnapshot | null = null;
+
+  getCircuitBreaker(): CircuitBreaker {
+    return this.breaker;
+  }
 
   async fetchLatestPrices(): Promise<PriceSnapshot[]> {
     try {
-      const liveRate = await this.fetchLiveRate();
+      const liveRate = await this.breaker.execute(
+        () => this.fetchLiveRate(),
+        () => null
+      );
       if (liveRate) {
         this.cachedSnapshot = liveRate;
         return [liveRate];
@@ -125,6 +140,6 @@ export class ForexProvider implements IMarketDataProvider {
       clearTimeout(vcbTimeout);
     }
 
-    return null;
+    throw new Error('All USD/VND forex feeds failed to return valid rates');
   }
 }

@@ -3,6 +3,8 @@ import { INewsProvider, RawArticleDto } from '../interfaces/news-provider.interf
 import { DeduplicationService } from '../services/deduplication.service';
 import { SEED_MARKET_EVENTS } from '../../../database/seed-data';
 
+import { CircuitBreaker } from '../../../common/circuit-breaker';
+
 interface RssFeedConfig {
   sourceCode: string;
   url: string;
@@ -32,24 +34,47 @@ export class RssFeedNewsProvider implements INewsProvider {
     }
   ];
 
+  private readonly breaker = new CircuitBreaker({
+    name: 'RssFeedCrawler',
+    failureThreshold: 3,
+    resetTimeoutMs: 300_000
+  });
+
   private cachedArticles: RawArticleDto[] = [];
   private lastFetchedAt: string | null = null;
 
   constructor(private readonly deduplicationService: DeduplicationService) {}
 
+  getCircuitBreaker(): CircuitBreaker {
+    return this.breaker;
+  }
+
   async fetchLatestArticles(limit = 30): Promise<RawArticleDto[]> {
     try {
-      const feedPromises = this.feeds.map((feed) => this.fetchSingleFeed(feed));
-      const results = await Promise.allSettled(feedPromises);
+      const aggregated = await this.breaker.execute(
+        async () => {
+          const feedPromises = this.feeds.map((feed) => this.fetchSingleFeed(feed));
+          const results = await Promise.allSettled(feedPromises);
 
-      const aggregated: RawArticleDto[] = [];
-      results.forEach((res, idx) => {
-        if (res.status === 'fulfilled') {
-          aggregated.push(...res.value);
-        } else {
-          this.logger.warn(`Failed to fetch RSS from ${this.feeds[idx].sourceCode}: ${res.reason?.message}`);
-        }
-      });
+          const items: RawArticleDto[] = [];
+          let hasAnySuccess = false;
+          results.forEach((res, idx) => {
+            if (res.status === 'fulfilled') {
+              items.push(...res.value);
+              hasAnySuccess = true;
+            } else {
+              this.logger.warn(`Failed to fetch RSS from ${this.feeds[idx].sourceCode}: ${res.reason?.message}`);
+            }
+          });
+
+          if (!hasAnySuccess || items.length === 0) {
+            throw new Error('All accredited news RSS feeds failed to return articles');
+          }
+
+          return items;
+        },
+        () => []
+      );
 
       if (aggregated.length > 0) {
         // Run deduplication

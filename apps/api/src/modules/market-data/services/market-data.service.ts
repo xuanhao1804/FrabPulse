@@ -74,8 +74,18 @@ export class MarketDataService {
     const totalCount = prices.length;
     const activeSources = Array.from(new Set(prices.map((p) => p.providerCode)));
 
+    const vnBreaker = this.vnGoldProvider.getCircuitBreaker?.()?.getStats();
+    const intlBreaker = this.intlGoldProvider.getCircuitBreaker?.()?.getStats();
+    const fxBreaker = this.forexProvider.getCircuitBreaker?.()?.getStats();
+
+    const circuitBreakers: Record<string, { state: string; failureCount: number; resetTimeoutMs: number }> = {};
+    if (vnBreaker) circuitBreakers[vnBreaker.name] = { state: vnBreaker.state, failureCount: vnBreaker.failureCount, resetTimeoutMs: vnBreaker.resetTimeoutMs };
+    if (intlBreaker) circuitBreakers[intlBreaker.name] = { state: intlBreaker.state, failureCount: intlBreaker.failureCount, resetTimeoutMs: intlBreaker.resetTimeoutMs };
+    if (fxBreaker) circuitBreakers[fxBreaker.name] = { state: fxBreaker.state, failureCount: fxBreaker.failureCount, resetTimeoutMs: fxBreaker.resetTimeoutMs };
+
     let status: 'HEALTHY' | 'DEGRADED' | 'OFFLINE' = 'HEALTHY';
-    if (liveCount === 0) {
+    const anyTripped = Object.values(circuitBreakers).some((b) => b.state === 'OPEN');
+    if (liveCount === 0 || anyTripped) {
       status = prices.some((p) => p.sourceType === 'CACHED') ? 'DEGRADED' : 'OFFLINE';
     } else if (liveCount < totalCount) {
       status = 'DEGRADED';
@@ -86,7 +96,8 @@ export class MarketDataService {
       lastSync: this.lastSyncTime,
       liveAssetCount: liveCount,
       totalAssetCount: totalCount,
-      activeSources
+      activeSources,
+      circuitBreakers
     };
   }
 

@@ -3,17 +3,32 @@ import { AssetCode, PriceSnapshot, PriceCandle, ProviderDataSource } from '@frab
 import { IMarketDataProvider } from '../interfaces/market-data-provider.interface';
 import { LATEST_SEED_PRICES, generateSeedHistoricalSeries } from '../../../database/seed-data';
 
+import { CircuitBreaker } from '../../../common/circuit-breaker';
+
 @Injectable()
 export class InternationalGoldProvider implements IMarketDataProvider {
   private readonly logger = new Logger(InternationalGoldProvider.name);
   readonly providerCode = 'XAU_GLOBAL_FEED';
   readonly supportedAssets: AssetCode[] = ['XAU_USD'];
 
+  private readonly breaker = new CircuitBreaker({
+    name: 'InternationalSpotGold',
+    failureThreshold: 3,
+    resetTimeoutMs: 300_000
+  });
+
   private cachedSnapshot: PriceSnapshot | null = null;
+
+  getCircuitBreaker(): CircuitBreaker {
+    return this.breaker;
+  }
 
   async fetchLatestPrices(): Promise<PriceSnapshot[]> {
     try {
-      const price = await this.fetchLivePrice();
+      const price = await this.breaker.execute(
+        () => this.fetchLivePrice(),
+        () => null
+      );
       if (price) {
         this.cachedSnapshot = price;
         return [price];
@@ -126,6 +141,6 @@ export class InternationalGoldProvider implements IMarketDataProvider {
       clearTimeout(yTimeout);
     }
 
-    return null;
+    throw new Error('All international gold feeds failed to return valid price data');
   }
 }

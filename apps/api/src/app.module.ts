@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { DatabaseModule } from './database/database.module';
 import { MarketDataModule } from './modules/market-data/market-data.module';
 import { NewsModule } from './modules/news/news.module';
@@ -14,6 +15,7 @@ import { HealthModule } from './modules/health/health.module';
       isGlobal: true,
       envFilePath: ['.env', '../../.env']
     }),
+    ScheduleModule.forRoot(),
     DatabaseModule,
     MarketDataModule,
     NewsModule,
