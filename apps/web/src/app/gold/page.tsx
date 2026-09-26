@@ -53,41 +53,41 @@ export default async function GoldHubPage() {
       />
 
       {/* Header */}
-      <div className="space-y-3 pb-6 border-b border-pulse-800">
+      <div className="space-y-3 pb-6 border-b border-slate-200 dark:border-pulse-800">
         <div className="flex items-center gap-2">
-          <span className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+          <span className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
             <Layers className="w-5 h-5" />
           </span>
-          <span className="text-xs font-mono font-bold tracking-wider text-emerald-400 uppercase">
+          <span className="text-xs font-mono font-bold tracking-wider text-emerald-600 dark:text-emerald-400 uppercase">
             Asset Intelligence Hub
           </span>
         </div>
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           Gold Market Directory & Provider Specifications
         </h1>
-        <p className="text-xs sm:text-sm text-pulse-300 max-w-3xl leading-relaxed">
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-pulse-300 max-w-3xl leading-relaxed">
           Detailed overview of national gold bullion benchmarks in Vietnam and international commodity exchanges. Understand specifications, historical spreads, and regulatory backgrounds.
         </p>
       </div>
 
       {/* Vietnam vs World Summary Box */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-pulse-900/80 border border-emerald-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-pulse-900/80 border border-slate-200 dark:border-emerald-500/30 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 mb-1">
+          <div className="flex items-center gap-2 text-xs font-mono text-emerald-600 dark:text-emerald-400 mb-1">
             <Scale className="w-4 h-4" />
             <span>CURRENT DOMESTIC PREMIUM METRIC</span>
           </div>
-          <h2 className="text-lg sm:text-xl font-bold text-white">
+          <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
             Vietnam Gold trades at a +{formatPercent(gapData.gapPercent)} (+{formatVndMillions(gapData.gapVnd)}/lượng) premium over World Spot
           </h2>
-          <p className="text-xs text-pulse-400 mt-1">
+          <p className="text-xs text-slate-500 dark:text-pulse-400 mt-1">
             Based on spot gold at {formatUsd(gapData.xauUsd)}/oz and commercial FX at {gapData.usdVnd.toLocaleString()} VND/USD.
           </p>
         </div>
 
         <Link
           href="/methodology"
-          className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-pulse-950 border border-pulse-800 text-xs font-mono text-emerald-400 hover:text-emerald-300 min-h-[44px] transition-colors shrink-0"
+          className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-pulse-950 border border-slate-200 dark:border-pulse-800 text-xs font-mono text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 min-h-[44px] transition-colors shrink-0"
         >
           <span>Conversion Math</span>
           <ExternalLink className="w-3.5 h-3.5" />
@@ -96,7 +96,7 @@ export default async function GoldHubPage() {
 
       {/* Provider Profiles Grid */}
       <section aria-labelledby="profiles-heading" className="space-y-4">
-        <h2 id="profiles-heading" className="text-lg font-bold text-white tracking-tight">
+        <h2 id="profiles-heading" className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">
           Tracked Bullion Entities & Assets
         </h2>
 
@@ -108,36 +108,36 @@ export default async function GoldHubPage() {
             return (
               <div
                 key={asset.code}
-                className="rounded-2xl bg-pulse-900/90 border border-pulse-800 hover:border-pulse-700 p-5 flex flex-col justify-between transition-all group hover:shadow-lg"
+                className="rounded-2xl bg-white dark:bg-pulse-900/90 border border-slate-200 dark:border-pulse-800 hover:border-slate-300 dark:hover:border-pulse-700 p-5 flex flex-col justify-between transition-all group shadow-sm hover:shadow-md"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-pulse-800 text-emerald-400">
+                    <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-pulse-800 text-emerald-600 dark:text-emerald-400 border border-slate-200 dark:border-pulse-700">
                       {asset.symbol}
                     </span>
-                    <span className="text-[11px] font-mono text-pulse-400">{asset.category}</span>
+                    <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400">{asset.category}</span>
                   </div>
 
-                  <h3 className="text-base font-bold text-white group-hover:text-emerald-300 transition-colors">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">
                     {asset.name}
                   </h3>
 
-                  <p className="text-xs text-pulse-300 mt-1.5 leading-relaxed">
+                  <p className="text-xs text-slate-600 dark:text-pulse-300 mt-1.5 leading-relaxed">
                     {asset.description}
                   </p>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-pulse-800 flex items-center justify-between">
+                <div className="mt-4 pt-3 border-t border-slate-200 dark:border-pulse-800 flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] text-pulse-400 block font-mono">LATEST QUOTE</span>
-                    <span className="text-sm font-bold font-mono text-white">
+                    <span className="text-[10px] text-slate-500 dark:text-pulse-400 block font-mono">LATEST QUOTE</span>
+                    <span className="text-sm font-bold font-mono text-slate-900 dark:text-white">
                       {price ? (isVnd ? formatVndMillions(price.sellPrice) : formatUsd(price.sellPrice)) : 'Active'}
                     </span>
                   </div>
 
                   <Link
                     href={`/gold/${asset.slug}`}
-                    className="inline-flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 font-medium min-h-[44px] px-3 py-2 rounded-xl bg-pulse-950 border border-pulse-800 transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium min-h-[44px] px-3 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-pulse-950 border border-slate-200 dark:border-pulse-800 transition-colors"
                   >
                     <span>View Specifications</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -150,18 +150,18 @@ export default async function GoldHubPage() {
       </section>
 
       {/* Regulatory Context Box */}
-      <section className="p-5 sm:p-6 rounded-2xl bg-pulse-900/50 border border-pulse-800 space-y-3">
-        <h3 className="text-sm font-bold text-white flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-amber-400" />
+      <section className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-pulse-900/50 border border-slate-200 dark:border-pulse-800 space-y-3 shadow-sm">
+        <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-amber-500" />
           <span>Vietnamese Gold Market Regulatory Architecture (Decree 24)</span>
         </h3>
-        <p className="text-xs text-pulse-300 leading-relaxed">
+        <p className="text-xs text-slate-600 dark:text-pulse-300 leading-relaxed">
           Under Vietnam&apos;s Decree 24/2012/ND-CP, the State Bank of Vietnam holds exclusive sovereign authority over gold bullion production and import quotas. SJC 9999 was designated the sole national bullion brand, giving rise to unique domestic spread dynamics against world spot gold.
         </p>
         <div className="pt-2">
           <Link
             href="/topics/vietnam-regulation"
-            className="text-xs text-emerald-400 hover:underline flex items-center gap-1 font-mono"
+            className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 font-mono"
           >
             <span>Read full regulatory analysis on Decree 24</span>
             <ArrowRight className="w-3.5 h-3.5" />

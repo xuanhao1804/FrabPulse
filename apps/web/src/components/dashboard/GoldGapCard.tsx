@@ -2,9 +2,8 @@
 
 import React, { useState } from 'react';
 import { GoldGapAnalysis, formatVndMillions, formatPercent, formatUsd, formatVnd } from '@frabpulse/shared';
-import { Scale, Info, ArrowUpRight, HelpCircle, Layers } from 'lucide-react';
+import { Scale, ArrowUpRight, HelpCircle, ChevronDown, ChevronUp, Calculator, ShieldCheck, TrendingUp, Info } from 'lucide-react';
 import { MarketHealthBadge } from './MarketHealthBadge';
-import Link from 'next/link';
 
 interface GoldGapCardProps {
   gapData: GoldGapAnalysis;
@@ -13,23 +12,33 @@ interface GoldGapCardProps {
 export function GoldGapCard({ gapData }: GoldGapCardProps) {
   const [showFormula, setShowFormula] = useState(false);
 
-  return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-pulse-900 via-pulse-900/90 to-pulse-850 border border-emerald-500/20 p-4 sm:p-6 shadow-xl shadow-black/20">
-      {/* Background glow accent */}
-      <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
+  // Categorize spread level
+  const gapPercent = gapData.gapPercent;
+  const spreadCategory =
+    gapPercent > 20
+      ? { label: 'EXTREME PREMIUM', color: 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/30' }
+      : gapPercent > 12
+      ? { label: 'ELEVATED PREMIUM', color: 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/30' }
+      : { label: 'NORMAL SPREAD', color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30' };
 
-      <div className="flex items-start justify-between flex-wrap gap-3 mb-4">
-        <div className="flex items-center gap-2.5">
-          <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 shrink-0">
-            <Scale className="w-4 h-4 sm:w-5 sm:h-5" />
+  return (
+    <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-pulse-900/90 border border-slate-200 dark:border-pulse-800 p-4 sm:p-6 shadow-sm hover:shadow-md dark:shadow-xl dark:shadow-black/20 transition-all">
+      {/* Background glow accent */}
+      <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-amber-500/10 dark:bg-emerald-500/10 blur-3xl pointer-events-none" />
+
+      {/* Header bar */}
+      <div className="flex items-start justify-between flex-wrap gap-3 mb-5">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-amber-500/10 dark:bg-emerald-500/10 border border-amber-500/20 dark:border-emerald-500/20 text-amber-600 dark:text-emerald-400 shrink-0">
+            <Scale className="w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-              <h2 className="text-sm sm:text-base font-semibold text-white tracking-tight">
-                Vietnam vs. World Gold Gap
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+                Vietnam vs. World Gold Arbitrage Gap
               </h2>
-              <span className="px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-mono rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                ARBITRAGE SPREAD
+              <span className={`px-2 py-0.5 text-[10px] font-mono font-bold rounded-lg border ${spreadCategory.color}`}>
+                {spreadCategory.label}
               </span>
               <MarketHealthBadge
                 sourceType={gapData.sourceType}
@@ -37,89 +46,125 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
                 compact
               />
             </div>
-            <p className="text-[11px] sm:text-xs text-pulse-400 mt-0.5">
-              Empirical spread between SJC 9999 and converted international spot bullion
+            <p className="text-xs text-slate-500 dark:text-pulse-400 mt-0.5">
+              Empirical gap between domestic SJC 9999 bullion and converted global spot gold (XAU/USD)
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-          <button
-            onClick={() => setShowFormula(!showFormula)}
-            className="flex items-center justify-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 min-h-[44px] px-3 py-2 rounded-xl bg-pulse-800/80 hover:bg-pulse-800 border border-emerald-500/20 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
-            aria-expanded={showFormula}
-            aria-label="Inspect mathematical conversion formula"
-          >
-            <HelpCircle className="w-4 h-4" />
-            <span>{showFormula ? 'Hide Formula' : 'Inspect Math'}</span>
-          </button>
-        </div>
+        <button
+          onClick={() => setShowFormula(!showFormula)}
+          className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-300 min-h-[40px] px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-pulse-800/80 dark:hover:bg-pulse-800 border border-slate-200 dark:border-pulse-700 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
+          aria-expanded={showFormula}
+          aria-label="Inspect mathematical arbitrage conversion formula"
+        >
+          <Calculator className="w-3.5 h-3.5" />
+          <span>{showFormula ? 'Hide Formula' : 'Formula & Math'}</span>
+          {showFormula ? <ChevronUp className="w-3.5 h-3.5 ml-0.5" /> : <ChevronDown className="w-3.5 h-3.5 ml-0.5" />}
+        </button>
       </div>
 
-      {/* Main Stats Display: 1 col on mobile, 3 cols on tablet/desktop */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-1">
-        <div className="p-3.5 sm:p-4 rounded-xl bg-pulse-950/70 border border-pulse-800/80">
-          <span className="text-[11px] sm:text-xs text-pulse-400 block mb-1">Domestic Premium (VND)</span>
-          <div className="flex items-baseline gap-2">
-            <span className="text-xl sm:text-2xl font-bold font-mono text-emerald-400">
+      {/* 4-Metric Scientific Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {/* Metric 1: Arbitrage Spread */}
+        <div className="p-4 rounded-xl bg-slate-50 dark:bg-pulse-950/70 border border-slate-200/80 dark:border-pulse-800/80">
+          <span className="text-xs font-medium text-slate-500 dark:text-pulse-400 block mb-1">
+            Arbitrage Spread (Per Tael)
+          </span>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-2xl sm:text-3xl font-extrabold font-mono tabular-nums text-amber-700 dark:text-emerald-400">
               +{formatVndMillions(gapData.gapVnd)}
             </span>
           </div>
-          <span className="text-[10px] sm:text-[11px] text-pulse-500 mt-1 block truncate">
+          <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 mt-1 block truncate">
             {formatVnd(gapData.gapVnd)} / lượng
           </span>
         </div>
 
-        <div className="p-3.5 sm:p-4 rounded-xl bg-pulse-950/70 border border-pulse-800/80">
-          <span className="text-[11px] sm:text-xs text-pulse-400 block mb-1">Percentage Premium</span>
-          <div className="flex items-baseline gap-2">
-            <span className="text-xl sm:text-2xl font-bold font-mono text-emerald-400 flex items-center">
+        {/* Metric 2: Percentage Premium */}
+        <div className="p-4 rounded-xl bg-slate-50 dark:bg-pulse-950/70 border border-slate-200/80 dark:border-pulse-800/80">
+          <span className="text-xs font-medium text-slate-500 dark:text-pulse-400 block mb-1">
+            Premium Over World Spot
+          </span>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-2xl sm:text-3xl font-extrabold font-mono tabular-nums text-amber-700 dark:text-emerald-400 flex items-center">
               {formatPercent(gapData.gapPercent)}
-              <ArrowUpRight className="w-4 h-4 ml-0.5 text-emerald-400 shrink-0" />
+              <ArrowUpRight className="w-5 h-5 ml-0.5 shrink-0" />
             </span>
           </div>
-          <span className="text-[10px] sm:text-[11px] text-pulse-500 mt-1 block">
-            Relative to world spot benchmark
+          <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 mt-1 block">
+            Domestic premium ratio
           </span>
         </div>
 
-        <div className="p-3.5 sm:p-4 rounded-xl bg-pulse-950/70 border border-pulse-800/80">
-          <span className="text-[11px] sm:text-xs text-pulse-400 block mb-1">Converted World Spot</span>
-          <div className="text-xl sm:text-2xl font-bold font-mono text-white">
-            {formatVndMillions(gapData.worldPriceVndPerTael)}
+        {/* Metric 3: Domestic SJC Benchmark */}
+        <div className="p-4 rounded-xl bg-slate-50 dark:bg-pulse-950/70 border border-slate-200/80 dark:border-pulse-800/80">
+          <span className="text-xs font-medium text-slate-500 dark:text-pulse-400 block mb-1">
+            SJC 9999 Domestic Ask
+          </span>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-slate-900 dark:text-white">
+              {formatVndMillions(gapData.domesticPriceVndPerTael)}
+            </span>
           </div>
-          <span className="text-[10px] sm:text-[11px] text-pulse-500 mt-1 block truncate">
-            @{formatUsd(gapData.xauUsd)}/oz × {gapData.usdVnd.toLocaleString()} ₫
+          <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 mt-1 block truncate">
+            {formatVnd(gapData.domesticPriceVndPerTael)} / lượng
+          </span>
+        </div>
+
+        {/* Metric 4: Converted World Gold */}
+        <div className="p-4 rounded-xl bg-slate-50 dark:bg-pulse-950/70 border border-slate-200/80 dark:border-pulse-800/80">
+          <span className="text-xs font-medium text-slate-500 dark:text-pulse-400 block mb-1">
+            Converted World Spot
+          </span>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-slate-700 dark:text-slate-200">
+              {formatVndMillions(gapData.worldPriceVndPerTael)}
+            </span>
+          </div>
+          <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 mt-1 block truncate">
+            ${gapData.xauUsd.toFixed(1)}/oz @ {gapData.usdVnd.toLocaleString()} ₫
           </span>
         </div>
       </div>
 
-      {/* Formula Transparency Drawer */}
+      {/* Expandable Scientific Formula Inspector */}
       {showFormula && (
-        <div className="mt-4 p-4 rounded-xl bg-pulse-950/95 border border-emerald-500/30 text-xs animate-in fade-in duration-200">
-          <div className="flex items-center gap-2 text-emerald-400 font-semibold mb-2">
-            <Info className="w-4 h-4 shrink-0" />
-            <span>Mathematical Conversion Standard</span>
+        <div className="mt-4 p-4 rounded-xl bg-slate-50 dark:bg-pulse-950 border border-slate-200 dark:border-pulse-800 animate-in fade-in duration-200">
+          <div className="flex items-center gap-2 mb-3 text-xs font-bold text-slate-900 dark:text-white">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Mathematical Standardization & Transparent Conversion Pipeline</span>
           </div>
-          <div className="space-y-1 text-pulse-300 font-mono text-[11px] sm:text-xs break-all sm:break-normal">
-            <p>
-              World (VND/lượng) = {formatUsd(gapData.xauUsd)} × {gapData.usdVnd.toLocaleString()} × 1.20565 = {formatVndMillions(gapData.worldPriceVndPerTael)}
-            </p>
-            <p>
-              Gap (VND) = {formatVndMillions(gapData.domesticPriceVndPerTael)} (SJC) - {formatVndMillions(gapData.worldPriceVndPerTael)} = +{formatVndMillions(gapData.gapVnd)}
-            </p>
-          </div>
-          <div className="mt-3 pt-2 border-t border-pulse-900 flex items-center justify-between flex-wrap gap-2 text-[11px]">
-            <span className="text-pulse-500">
-              * 1 Vietnamese lượng = 37.5g; 1 Troy Ounce = 31.1035g (ratio: 1.20565).
-            </span>
-            <Link
-              href="/methodology"
-              className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2 flex items-center gap-1 font-sans"
-            >
-              <span>Read Methodology</span>
-              <Layers className="w-3 h-3" />
-            </Link>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+            {/* Step 1 */}
+            <div className="p-3 rounded-lg bg-white dark:bg-pulse-900 border border-slate-200 dark:border-pulse-800">
+              <span className="text-[10px] text-slate-500 dark:text-pulse-400 font-bold uppercase block mb-1">
+                Step 1: Ounce to Tael Unit Conversion
+              </span>
+              <div className="text-slate-800 dark:text-pulse-200 leading-relaxed">
+                <span className="text-emerald-700 dark:text-emerald-400 font-bold">World Converted (VND/lượng)</span> =<br />
+                {formatUsd(gapData.xauUsd)} × {gapData.usdVnd.toLocaleString()} ₫/USD × 1.20565<br />
+                = <span className="font-bold text-slate-900 dark:text-white">{formatVnd(gapData.worldPriceVndPerTael)}</span>
+              </div>
+              <p className="text-[10px] text-slate-500 dark:text-pulse-400 mt-2">
+                * 1 Troy Ounce = 31.1035g; 1 Vietnamese Tael (lượng) = 37.5g. Factor = 37.5 / 31.1035 = 1.20565
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="p-3 rounded-lg bg-white dark:bg-pulse-900 border border-slate-200 dark:border-pulse-800">
+              <span className="text-[10px] text-slate-500 dark:text-pulse-400 font-bold uppercase block mb-1">
+                Step 2: Spread & Percentage Premium
+              </span>
+              <div className="text-slate-800 dark:text-pulse-200 leading-relaxed">
+                <span className="text-amber-700 dark:text-amber-400 font-bold">Spread</span> = SJC Domestic - World Converted<br />
+                = {formatVnd(gapData.domesticPriceVndPerTael)} - {formatVnd(gapData.worldPriceVndPerTael)}<br />
+                = <span className="font-bold text-emerald-700 dark:text-emerald-400">+{formatVnd(gapData.gapVnd)} / lượng</span><br />
+                <span className="text-slate-600 dark:text-pulse-300">Premium = ({gapData.gapVnd.toLocaleString()} / {gapData.worldPriceVndPerTael.toLocaleString()}) = </span>
+                <span className="font-bold text-emerald-700 dark:text-emerald-400">+{gapData.gapPercent.toFixed(2)}%</span>
+              </div>
+            </div>
           </div>
         </div>
       )}

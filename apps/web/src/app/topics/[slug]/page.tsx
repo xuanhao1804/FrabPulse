@@ -86,7 +86,7 @@ export default async function TopicDetailPage({ params }: Props) {
       <div>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-mono text-pulse-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-mono text-slate-500 hover:text-slate-900 dark:text-pulse-400 dark:hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>BACK TO DASHBOARD</span>
@@ -94,30 +94,30 @@ export default async function TopicDetailPage({ params }: Props) {
       </div>
 
       {/* Header */}
-      <div className="space-y-3 pb-6 border-b border-pulse-800">
+      <div className="space-y-3 pb-6 border-b border-slate-200 dark:border-pulse-800">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+          <span className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
             <Compass className="w-4 h-4" />
           </span>
-          <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">
+          <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
             TOPIC RADAR: {topic.shortName}
           </span>
-          <span className="text-xs text-pulse-500">•</span>
-          <span className="text-xs text-pulse-400 font-mono">{topicEvents.length} RECORDED EVENTS</span>
+          <span className="text-xs text-slate-400 dark:text-pulse-500">•</span>
+          <span className="text-xs text-slate-500 dark:text-pulse-400 font-mono">{topicEvents.length} RECORDED EVENTS</span>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-snug">
           {topic.title}
         </h1>
 
-        <p className="text-xs sm:text-sm text-pulse-300 leading-relaxed max-w-3xl">
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-pulse-300 leading-relaxed max-w-3xl">
           {topic.description}
         </p>
       </div>
 
       {/* Events Listing */}
       <section aria-labelledby="topic-events-heading" className="space-y-4">
-        <h2 id="topic-events-heading" className="text-base font-bold text-white tracking-tight">
+        <h2 id="topic-events-heading" className="text-base font-bold text-slate-900 dark:text-white tracking-tight">
           Grounded Market Events Under &ldquo;{topic.shortName}&rdquo;
         </h2>
 
@@ -126,33 +126,33 @@ export default async function TopicDetailPage({ params }: Props) {
             {topicEvents.map((evt) => (
               <div
                 key={evt.id}
-                className="rounded-2xl bg-pulse-900/90 border border-pulse-800 hover:border-pulse-700 p-5 space-y-3 transition-colors"
+                className="rounded-2xl bg-white dark:bg-pulse-900/90 border border-slate-200 dark:border-pulse-800 hover:border-slate-300 dark:hover:border-pulse-700 p-5 space-y-3 transition-colors shadow-sm"
               >
                 <div className="flex items-start justify-between flex-wrap gap-2">
-                  <span className="text-xs text-pulse-400 font-mono flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-pulse-500" />
+                  <span className="text-xs text-slate-500 dark:text-pulse-400 font-mono flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-slate-400 dark:text-pulse-500" />
                     <span>{new Date(evt.happenedAt).toUTCString()}</span>
                   </span>
 
-                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                     {Math.round(evt.confidence * 100)}% source convergence
                   </span>
                 </div>
 
                 <Link href={`/events/${evt.id}`}>
-                  <h3 className="text-base font-bold text-white hover:text-emerald-300 transition-colors">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-300 transition-colors">
                     {evt.title}
                   </h3>
                 </Link>
 
-                <p className="text-xs text-pulse-300 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-pulse-300 leading-relaxed">
                   {evt.summary}
                 </p>
 
                 {/* Associated Deltas */}
-                <div className="pt-3 border-t border-pulse-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <div className="pt-3 border-t border-slate-200 dark:border-pulse-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-pulse-500 text-[11px]">Associated Delta:</span>
+                    <span className="text-slate-500 dark:text-pulse-500 text-[11px]">Associated Delta:</span>
                     {evt.relatedAssets.map((rel) => {
                       const isUp = rel.deltaPercent >= 0;
                       return (
@@ -160,8 +160,8 @@ export default async function TopicDetailPage({ params }: Props) {
                           key={rel.assetCode}
                           className={`font-mono text-[11px] px-2 py-0.5 rounded ${
                             isUp
-                              ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                              : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                              ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                              : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
                           }`}
                         >
                           {rel.assetCode} {formatPercent(rel.deltaPercent)} ({rel.windowMinutes}m)
@@ -172,7 +172,7 @@ export default async function TopicDetailPage({ params }: Props) {
 
                   <Link
                     href={`/events/${evt.id}`}
-                    className="inline-flex items-center gap-1 text-emerald-400 hover:text-emerald-300 text-xs font-mono"
+                    className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 text-xs font-mono"
                   >
                     <span>Full Evidence Breakdown</span>
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -182,15 +182,15 @@ export default async function TopicDetailPage({ params }: Props) {
             ))}
           </div>
         ) : (
-          <div className="p-8 rounded-xl bg-pulse-950 border border-pulse-800 text-center text-xs text-pulse-400">
+          <div className="p-8 rounded-xl bg-slate-50 dark:bg-pulse-950 border border-slate-200 dark:border-pulse-800 text-center text-xs text-slate-500 dark:text-pulse-400">
             No market events currently registered under this topic.
           </div>
         )}
       </section>
 
       {/* Explore other topics */}
-      <section className="pt-6 border-t border-pulse-800 space-y-3">
-        <span className="text-xs text-pulse-500 font-mono block">EXPLORE OTHER INTELLIGENCE TOPICS:</span>
+      <section className="pt-6 border-t border-slate-200 dark:border-pulse-800 space-y-3">
+        <span className="text-xs text-slate-500 dark:text-pulse-500 font-mono block">EXPLORE OTHER INTELLIGENCE TOPICS:</span>
         <div className="flex items-center gap-2 flex-wrap">
           {Object.values(TOPIC_DEFINITIONS)
             .filter((t) => t.slug !== topic.slug)
@@ -198,7 +198,7 @@ export default async function TopicDetailPage({ params }: Props) {
               <Link
                 key={other.slug}
                 href={`/topics/${other.slug}`}
-                className="px-3 py-1.5 rounded-lg bg-pulse-900 hover:bg-pulse-800 text-xs font-mono text-pulse-300 hover:text-emerald-400 border border-pulse-800 transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 dark:bg-pulse-900 dark:hover:bg-pulse-800 text-xs font-mono text-slate-700 dark:text-pulse-300 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200 dark:border-pulse-800 transition-colors shadow-sm"
               >
                 {other.shortName}
               </Link>
