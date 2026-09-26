@@ -72,3 +72,81 @@ export function formatPercent(value: number): string {
   const sign = value > 0 ? '+' : '';
   return `${sign}${value.toFixed(2)}%`;
 }
+
+/**
+ * Physical Gold Weight Constants
+ */
+export const GRAMS_PER_TAEL = 37.5;
+export const GRAMS_PER_CHI = 3.75;
+export const GRAMS_PER_TROY_OZ = 31.1034768;
+
+export type GoldUnit = 'LUONG' | 'CHI' | 'TROY_OZ' | 'GRAM' | 'KG';
+
+export interface ConvertedGoldWeights {
+  luong: number;
+  chi: number;
+  troyOz: number;
+  grams: number;
+  kg: number;
+}
+
+export function convertGoldWeight(amount: number, fromUnit: GoldUnit): ConvertedGoldWeights {
+  if (isNaN(amount) || amount <= 0) {
+    return { luong: 0, chi: 0, troyOz: 0, grams: 0, kg: 0 };
+  }
+
+  // Convert input to baseline grams first
+  let grams = 0;
+  switch (fromUnit) {
+    case 'LUONG':
+      grams = amount * GRAMS_PER_TAEL;
+      break;
+    case 'CHI':
+      grams = amount * GRAMS_PER_CHI;
+      break;
+    case 'TROY_OZ':
+      grams = amount * GRAMS_PER_TROY_OZ;
+      break;
+    case 'GRAM':
+      grams = amount;
+      break;
+    case 'KG':
+      grams = amount * 1000;
+      break;
+  }
+
+  return {
+    grams,
+    kg: grams / 1000,
+    luong: grams / GRAMS_PER_TAEL,
+    chi: grams / GRAMS_PER_CHI,
+    troyOz: grams / GRAMS_PER_TROY_OZ
+  };
+}
+
+export interface EstimatedGoldValues {
+  domesticVnd: number;
+  worldVnd: number;
+  worldUsd: number;
+  arbitrageDiffVnd: number;
+}
+
+export function estimateGoldValue(
+  weights: ConvertedGoldWeights,
+  sjcPricePerLuong: number,
+  spotGoldUsdPerOz: number,
+  usdVnd: number
+): EstimatedGoldValues {
+  const domesticVnd = Math.round(weights.luong * sjcPricePerLuong);
+  const worldUsd = Number((weights.troyOz * spotGoldUsdPerOz).toFixed(2));
+  const worldVnd = Math.round(worldUsd * usdVnd);
+  const arbitrageDiffVnd = domesticVnd - worldVnd;
+
+  return {
+    domesticVnd,
+    worldVnd,
+    worldUsd,
+    arbitrageDiffVnd
+  };
+}
+

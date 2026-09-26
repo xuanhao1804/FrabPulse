@@ -18,6 +18,7 @@ import {
 
 import { ThemeToggle } from '../theme/ThemeToggle';
 import { LanguageToggle } from '../theme/LanguageToggle';
+import { TimezoneToggle } from '../theme/TimezoneToggle';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
 
 export function Navbar() {
@@ -91,6 +92,9 @@ export function Navbar() {
                 {isOnline ? 'PULSE ONLINE' : 'SYNCING'}
               </span>
             </div>
+
+            {/* Timezone Switcher (ICT / UTC) */}
+            <TimezoneToggle />
 
             {/* Language Switcher (VI / EN) */}
             <LanguageToggle />

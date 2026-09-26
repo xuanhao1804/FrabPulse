@@ -5,6 +5,7 @@ import { GoldGapAnalysis, formatVndMillions, formatPercent, formatUsd, formatVnd
 import { Scale, ArrowUpRight, HelpCircle, ChevronDown, ChevronUp, Calculator, ShieldCheck, TrendingUp, Info } from 'lucide-react';
 import { MarketHealthBadge } from './MarketHealthBadge';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
+import { formatPriceLocale, formatPercentLocale } from '../../lib/formatters';
 
 interface GoldGapCardProps {
   gapData: GoldGapAnalysis;
@@ -12,7 +13,7 @@ interface GoldGapCardProps {
 
 export function GoldGapCard({ gapData }: GoldGapCardProps) {
   const [showFormula, setShowFormula] = useState(false);
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
 
   // Categorize spread level
   const gapPercent = gapData.gapPercent;
@@ -75,11 +76,11 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
           </span>
           <div className="flex items-baseline gap-1.5">
             <span className="text-2xl sm:text-3xl font-extrabold font-mono tabular-nums text-amber-700 dark:text-emerald-400">
-              +{formatVndMillions(gapData.gapVnd)}
+              +{formatPriceLocale(gapData.gapVnd, 'VND', locale, true)}
             </span>
           </div>
           <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 mt-1 block truncate">
-            {formatVnd(gapData.gapVnd)} / lượng
+            {formatPriceLocale(gapData.gapVnd, 'VND', locale, false)} / {locale === 'vi' ? 'lượng' : 'tael'}
           </span>
         </div>
 
@@ -90,7 +91,7 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
           </span>
           <div className="flex items-baseline gap-1.5">
             <span className="text-2xl sm:text-3xl font-extrabold font-mono tabular-nums text-amber-700 dark:text-emerald-400 flex items-center">
-              {formatPercent(gapData.gapPercent)}
+              {formatPercentLocale(gapData.gapPercent, locale)}
               <ArrowUpRight className="w-5 h-5 ml-0.5 shrink-0" />
             </span>
           </div>
@@ -106,11 +107,11 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
           </span>
           <div className="flex items-baseline gap-1.5">
             <span className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-slate-900 dark:text-white">
-              {formatVndMillions(gapData.domesticPriceVndPerTael)}
+              {formatPriceLocale(gapData.domesticPriceVndPerTael, 'VND', locale, true)}
             </span>
           </div>
           <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 mt-1 block truncate">
-            {formatVnd(gapData.domesticPriceVndPerTael)} / lượng
+            {formatPriceLocale(gapData.domesticPriceVndPerTael, 'VND', locale, false)} / {locale === 'vi' ? 'lượng' : 'tael'}
           </span>
         </div>
 
@@ -121,11 +122,11 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
           </span>
           <div className="flex items-baseline gap-1.5">
             <span className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-slate-700 dark:text-slate-200">
-              {formatVndMillions(gapData.worldPriceVndPerTael)}
+              {formatPriceLocale(gapData.worldPriceVndPerTael, 'VND', locale, true)}
             </span>
           </div>
           <span className="text-[11px] font-mono text-slate-500 dark:text-pulse-400 mt-1 block truncate">
-            ${gapData.xauUsd.toFixed(1)}/oz @ {gapData.usdVnd.toLocaleString()} ₫
+            {formatPriceLocale(gapData.xauUsd, 'USD', locale, false)}/oz @ {formatPriceLocale(gapData.usdVnd, 'VND', locale, false)}
           </span>
         </div>
       </div>

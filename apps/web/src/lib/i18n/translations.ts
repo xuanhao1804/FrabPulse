@@ -129,6 +129,26 @@ export const translations = {
       sourcesCount: 'nguồn tin',
       fullAnalysis: 'Phân tích chi tiết'
     },
+    converter: {
+      title: 'Bộ Quy Đổi Đơn Vị Vàng & Định Giá Thực Tế',
+      subtitle: 'Quy đổi khối lượng chuẩn giữa Lượng (cây), Chỉ, Troy Ounce, Gram và tính giá trị theo SJC & Thế giới',
+      amount: 'Số lượng',
+      unit: 'Đơn vị tính',
+      unitLuong: 'Lượng (cây)',
+      unitChi: 'Chỉ',
+      unitOz: 'Troy Ounce (oz)',
+      unitGram: 'Gram (g)',
+      unitKg: 'Kilogram (kg)',
+      equivalentWeights: 'Quy đổi khối lượng tương đương',
+      domesticValue: 'Giá trị nội địa SJC',
+      worldValue: 'Giá trị thế giới quy đổi',
+      arbitrageSpread: 'Chênh lệch định giá',
+      quickPresets: 'Chọn nhanh:',
+      formulaTitle: 'Hệ số vật lý thực nghiệm:',
+      gramsPerLuong: '1 Lượng = 37.5g = 10 Chỉ',
+      gramsPerOz: '1 Ounce = 31.1034768g',
+      ozPerLuong: '1 Lượng = 1.20565 oz'
+    },
     footer: {
       description: 'Hệ thống radar phân tích chênh lệch giá vàng và tình báo sự kiện theo thời gian thực.',
       disclaimer: 'Dữ liệu chỉ mang tính chất nghiên cứu thị trường và tham khảo thông tin, không phải lời khuyên đầu tư tài chính.',
@@ -140,7 +160,10 @@ export const translations = {
       switchTheme: 'Đổi giao diện sáng/tối',
       langVi: 'Tiếng Việt',
       langEn: 'English',
-      switchLang: 'Đổi ngôn ngữ (Tiếng Việt / English)'
+      switchLang: 'Đổi ngôn ngữ (Tiếng Việt / English)',
+      switchTimezone: 'Đổi múi giờ (ICT / UTC)',
+      timezoneIct: 'Giờ Việt Nam (ICT)',
+      timezoneUtc: 'Giờ Quốc Tế (UTC)'
     }
   },
   en: {
@@ -271,6 +294,26 @@ export const translations = {
       sourcesCount: 'sources',
       fullAnalysis: 'Full Analysis'
     },
+    converter: {
+      title: 'Physical Gold Weight Converter & Valuation',
+      subtitle: 'Accurate weight conversions across Tael (lượng), Chi, Troy Ounce, Grams with live SJC & World valuation',
+      amount: 'Quantity',
+      unit: 'Unit',
+      unitLuong: 'Tael (lượng)',
+      unitChi: 'Chi (0.1 tael)',
+      unitOz: 'Troy Ounce (oz)',
+      unitGram: 'Gram (g)',
+      unitKg: 'Kilogram (kg)',
+      equivalentWeights: 'Equivalent Physical Weights',
+      domesticValue: 'Domestic SJC Value',
+      worldValue: 'Converted World Value',
+      arbitrageSpread: 'Valuation Premium',
+      quickPresets: 'Presets:',
+      formulaTitle: 'Physical Empirical Constants:',
+      gramsPerLuong: '1 Tael = 37.5g = 10 Chi',
+      gramsPerOz: '1 Troy Ounce = 31.1034768g',
+      ozPerLuong: '1 Tael = 1.20565 Troy Ounces'
+    },
     footer: {
       description: 'Real-time event intelligence and financial arbitrage radar for gold markets.',
       disclaimer: 'Market data is provided for analytical and informational purposes only and does not constitute financial advice.',
@@ -282,7 +325,10 @@ export const translations = {
       switchTheme: 'Toggle light/dark theme',
       langVi: 'Tiếng Việt',
       langEn: 'English',
-      switchLang: 'Toggle language (Tiếng Việt / English)'
+      switchLang: 'Toggle language (Tiếng Việt / English)',
+      switchTimezone: 'Toggle timezone (ICT / UTC)',
+      timezoneIct: 'Vietnam Time (ICT)',
+      timezoneUtc: 'Universal Time (UTC)'
     }
   }
 } as const;

@@ -7,13 +7,14 @@ import { MarketHealthBadge } from './MarketHealthBadge';
 import { formatTimeAgo, formatAbsoluteDateTime } from '../../lib/utils';
 import Link from 'next/link';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
+import { formatPriceLocale, formatPercentLocale } from '../../lib/formatters';
 
 interface AssetTableViewProps {
   prices: PriceSnapshot[];
 }
 
 export function AssetTableView({ prices }: AssetTableViewProps) {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
 
   if (!prices || prices.length === 0) return null;
 
@@ -41,9 +42,9 @@ export function AssetTableView({ prices }: AssetTableViewProps) {
             const slug = meta ? meta.slug : p.assetCode.toLowerCase();
 
             const formatVal = (amt: number) => {
-              if (isVnd) return formatVndMillions(amt);
-              if (isFx) return `${amt.toLocaleString()} ₫`;
-              return formatUsd(amt);
+              if (isVnd) return formatPriceLocale(amt, 'VND', locale, true);
+              if (isFx) return formatPriceLocale(amt, 'VND', locale, false);
+              return formatPriceLocale(amt, 'USD', locale, false);
             };
 
             const syncTime = p.lastFetchedAt || p.timestamp;
@@ -83,7 +84,7 @@ export function AssetTableView({ prices }: AssetTableViewProps) {
 
                 {/* Spread */}
                 <td className="py-3 px-3 text-right text-slate-600 dark:text-pulse-300 tabular-nums">
-                  {isVnd ? formatVndMillions(p.spread) : isFx ? `${p.spread} ₫` : `$${p.spread.toFixed(2)}`}
+                  {isVnd ? formatPriceLocale(p.spread, 'VND', locale, true) : isFx ? formatPriceLocale(p.spread, 'VND', locale, false) : formatPriceLocale(p.spread, 'USD', locale, false)}
                 </td>
 
                 {/* 24h Change */}
@@ -97,7 +98,7 @@ export function AssetTableView({ prices }: AssetTableViewProps) {
                       }`}
                     >
                       {isUp ? <ArrowUpRight className="w-3 h-3 mr-0.5" /> : <ArrowDownRight className="w-3 h-3 mr-0.5" />}
-                      {formatPercent(p.change24hPercent)}
+                      {formatPercentLocale(p.change24hPercent, locale)}
                     </span>
                   )}
                 </td>

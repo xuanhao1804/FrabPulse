@@ -11,7 +11,7 @@ interface LiveEventsFeedProps {
 }
 
 export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
-  const { t } = useLanguage();
+  const { t, timezone } = useLanguage();
 
   const getTopicSlug = (type: MarketEvent['eventType']) => {
     switch (type) {
@@ -90,7 +90,14 @@ export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
 
                   <span className="text-xs text-slate-500 dark:text-pulse-400 flex items-center gap-1 font-mono">
                     <Clock className="w-3 h-3 text-slate-400 dark:text-pulse-500" />
-                    <span>{new Date(event.happenedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} UTC</span>
+                    <span>
+                      {new Date(event.happenedAt).toLocaleTimeString([], {
+                        timeZone: timezone === 'ICT' ? 'Asia/Ho_Chi_Minh' : 'UTC',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}{' '}
+                      {timezone}
+                    </span>
                   </span>
                 </div>
 

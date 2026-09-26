@@ -93,5 +93,22 @@
 - **Rationale**: Zero external runtime bundle bloat (no bloated third-party frameworks), compile-time key verification via `DeepString<typeof translations['vi']>`, zero hydration mismatch, and instant toggle without full page reloads.
 - **Consequences**: All new user-facing UI copy must be added with exact key symmetry to both `vi` and `en` in `translations.ts`. Verified by automated parity tests in `apps/web/test/i18n.test.ts`.
 - **Related Issue**: [#12](https://github.com/xuanhao1804/FrabPulse/issues/12)
-- **Related Commit**: Current commit
+- **Related Commit**: [`5531463`](https://github.com/xuanhao1804/FrabPulse/commit/5531463)
+
+---
+
+## ADR-009: Financial Market Localization Depth: Dual Timezone (ICT/UTC), Locale-Aware Formatters & Gold Unit Converter
+- **Date**: 2026-09-26
+- **Context**: Standard string translation alone is insufficient for professional gold arbitrage traders and Vietnamese domestic buyers. Users require exact domestic thousand/decimal separators (`.` vs `,`), dual timezone awareness (ICT UTC+7 for domestic banking/trading vs UTC for global commodity markets), and an interactive physical mass converter reconciling Vietnamese retail gold units (lượng/cây, chỉ) with international commodity standards (troy ounce, gram, kg).
+- **Decision**:
+  1. Implement native `Intl.NumberFormat`-backed formatters (`formatPriceLocale`, `formatSpreadLocale`, `formatPercentLocale`, `formatNumberLocale`) ensuring `vi-VN` formatting uses dot separators (`89.500.000 ₫`) and `en-US` uses comma separators (`$2,650.50`).
+  2. Author authoritative physical mass constants in `@frabpulse/shared` (`GRAMS_PER_TAEL = 37.5`, `GRAMS_PER_CHI = 3.75`, `GRAMS_PER_TROY_OZ = 31.1034768`) and functions `convertGoldWeight` and `estimateGoldValue`.
+  3. Expand `LanguageContext` with `timezone: 'ICT' | 'UTC'`, `toggleTimezone`, and `localStorage` persistence (`frabpulse-timezone`).
+  4. Build `<TimezoneToggle />` component with accessible 44px min-touch target and wire active timezone into `<PriceEventChart />` crosshairs/event markers and `<LiveEventsFeed />` timestamps.
+  5. Build interactive `<GoldUnitConverter />` with quick-select presets (`1 Chỉ`, `5 Chỉ`, `1 Lượng`, `10 Lượng`, `1 Troy Oz`, `100g`, `1kg`), live valuation in VND/USD from active SJC & spot prices, and physical formula notes.
+- **Rationale**: Keeps domain calculations centralized and mathematically authoritative in `@frabpulse/shared`, avoids heavy external date/math libraries, prevents hydration mismatches, and delivers high-utility financial tooling directly into the trader dashboard.
+- **Consequences**: All future price, spread, and date displays must pass active `language` and `timezone` context through locale formatters.
+- **Related Issue**: [#13](https://github.com/xuanhao1804/FrabPulse/issues/13)
+- **Related Commit**: [`268dc81`](https://github.com/xuanhao1804/FrabPulse/commit/268dc81)
+
 

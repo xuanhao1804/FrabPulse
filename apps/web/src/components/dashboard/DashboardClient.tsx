@@ -23,6 +23,7 @@ import { ProviderCard } from './ProviderCard';
 import { AssetTableView } from './AssetTableView';
 import { PriceEventChart } from '../chart/PriceEventChart';
 import { LiveEventsFeed } from './LiveEventsFeed';
+import { GoldUnitConverter } from './GoldUnitConverter';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
 import {
   RefreshCw,
@@ -236,6 +237,13 @@ export function DashboardClient({
 
       {/* Vietnam vs World Gold Gap Hero Card */}
       <GoldGapCard gapData={gapData} />
+
+      {/* Physical Gold Unit Converter & Valuation */}
+      <GoldUnitConverter
+        sjcPrice={gapData.domesticPriceVndPerTael}
+        spotGoldUsd={gapData.xauUsd}
+        usdVnd={gapData.usdVnd}
+      />
 
       {/* High-priority Section: Bullion & Rates */}
       <section aria-labelledby="bullion-heading" className="space-y-3">

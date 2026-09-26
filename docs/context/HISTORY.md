@@ -8,8 +8,8 @@
 
 ## 1. Commit Coverage & Verification Matrix
 
-- **Total Historical Commits in Scope**: 12
-- **Total Assigned Commits**: 12
+- **Total Historical Commits in Scope**: 14
+- **Total Assigned Commits**: 14
 - **Missing Commits**: 0
 - **Duplicate Assignments**: 0
 - **Coverage**: 100% of Git history mapped to GitHub Issues.
@@ -30,12 +30,13 @@
 | **HT-8** | 2026-09 | Implement Ingestion Scheduler with Trading Hours & Circuit Breaker (Task 1.5.3) | [#9](https://github.com/xuanhao1804/FrabPulse/issues/9) | [\`fc2f69e\`](https://github.com/xuanhao1804/FrabPulse/commit/fc2f69e) | Cron scheduler respecting Vietnam trading hours (ICT 08:30 - 17:00), 3-state Circuit Breaker (\`CLOSED\`, \`OPEN\`, \`HALF_OPEN\`), 7 tests. | CLOSED | Milestone 1.5 & Git diff |
 | **HT-9** | 2026-09 | Implement Market Health Radar, Fallback Badges & Data Freshness UI (Task 1.5.4) | [#10](https://github.com/xuanhao1804/FrabPulse/issues/10) | [\`f55da91\`](https://github.com/xuanhao1804/FrabPulse/commit/f55da91), [\`be7e04d\`](https://github.com/xuanhao1804/FrabPulse/commit/be7e04d) | Visual source type badges (\`LIVE_FEED\`, \`SCRAPED_DOMESTIC\`, \`FALLBACK_FIXTURE\`), freshness timestamps, M1.5 completion record, 7 tests. | CLOSED | Milestone 1.5 & Git diff |
 | **HT-10** | 2026-09 | Overhaul Financial UI: Dual Light/Dark Theme, Real-time Ticker & Pro Chart | [#11](https://github.com/xuanhao1804/FrabPulse/issues/11) | [`6ebc303`](https://github.com/xuanhao1804/FrabPulse/commit/6ebc303) | Dual theme system (Light/Dark mode with zero FOUC), running MarketTickerTape, 4-KPI gold gap matrix with formula inspector, pro chart (Candlestick/Area, 4 views, MA20, crosshair, CSV export), tabular view toggle. | CLOSED | User feedback & Git diff |
-| **HT-11** | 2026-09 | Establish Repository Context Continuity System | [#1](https://github.com/xuanhao1804/FrabPulse/issues/1) | [`f31d5ce`](https://github.com/xuanhao1804/FrabPulse/commit/f31d5ce), [`bc025a9`](https://github.com/xuanhao1804/FrabPulse/commit/bc025a9) | `AGENTS.md`, `docs/context/*`, issue template, design spec, historical issues backfilled, 100% commit coverage. | CLOSED | User prompt & implementation |
-| **HT-12** | 2026-09 | Multi-Language (i18n) Support (Vietnamese & English) | [#12](https://github.com/xuanhao1804/FrabPulse/issues/12) | Current | Type-safe dual-language system (`vi` default and `en`), zero-FOUC `<head>` sync, `LanguageToggle` button in desktop & mobile nav, complete localization across all dashboard cards/charts/tables, 5 unit tests. | CLOSED | User request & Git diff |
+| **HT-11** | 2026-09 | Establish Repository Context Continuity System & Gate 0 Protocol | [#1](https://github.com/xuanhao1804/FrabPulse/issues/1) | [`f31d5ce`](https://github.com/xuanhao1804/FrabPulse/commit/f31d5ce), [`bc025a9`](https://github.com/xuanhao1804/FrabPulse/commit/bc025a9), [`fd220d1`](https://github.com/xuanhao1804/FrabPulse/commit/fd220d1) | `AGENTS.md`, `docs/context/*`, issue template, design spec, historical issues backfilled, Gate 0 PO/BA/Tech Lead protocol codified. | CLOSED | User prompt & implementation |
+| **HT-12** | 2026-09 | Multi-Language (i18n) Support (Vietnamese & English) | [#12](https://github.com/xuanhao1804/FrabPulse/issues/12) | [`5531463`](https://github.com/xuanhao1804/FrabPulse/commit/5531463) | Type-safe dual-language system (`vi` default and `en`), zero-FOUC `<head>` sync, `LanguageToggle` button in desktop & mobile nav, complete localization across all dashboard cards/charts/tables, 5 unit tests. | CLOSED | User request & Git diff |
+| **HT-13** | 2026-09 | Financial Localization Depth: Dual Timezone, Locale Formatters & Gold Unit Converter | [#13](https://github.com/xuanhao1804/FrabPulse/issues/13) | [`268dc81`](https://github.com/xuanhao1804/FrabPulse/commit/268dc81) | Locale-aware number/currency formatters (`Intl.NumberFormat`), dual timezone switching (ICT UTC+7 vs UTC), interactive Physical Gold Unit Converter (Lượng/Chỉ ↔ Troy Oz/Gram) with live valuation, 12 tests. | CLOSED | User alignment & Git diff |
 
 ---
 
 ## 3. Evidence Limitations & Notes
 - Early tasks (HT-1 through HT-5) were executed before the One Task, One Issue policy was introduced; their issues were reconstructed post-hoc with exact commit references.
-- All historical issues (#1 through #12) are mapped and closed on GitHub with provenance comments.
+- All historical issues (#1 through #13) are mapped and closed on GitHub with provenance comments.
 - Pull Requests: None in repository history (all work merged directly to `main`).

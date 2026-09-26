@@ -7,13 +7,14 @@ import { MarketHealthBadge } from './MarketHealthBadge';
 import { formatTimeAgo, formatAbsoluteDateTime } from '../../lib/utils';
 import Link from 'next/link';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
+import { formatPriceLocale, formatPercentLocale } from '../../lib/formatters';
 
 interface ProviderCardProps {
   price: PriceSnapshot;
 }
 
 export function ProviderCard({ price }: ProviderCardProps) {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const meta = ASSET_DEFINITIONS[price.assetCode];
   const isUp = (price.change24hPercent ?? 0) >= 0;
   const isDomesticGold = price.currency === 'VND' && price.assetCode !== 'USD_VND';
@@ -25,15 +26,15 @@ export function ProviderCard({ price }: ProviderCardProps) {
   const absoluteDates = syncTime ? formatAbsoluteDateTime(syncTime) : null;
 
   const formatPrice = (amount: number) => {
-    if (isDomesticGold) return formatVndMillions(amount);
-    if (isForex) return `${amount.toLocaleString()} ₫`;
-    return formatUsd(amount);
+    if (isDomesticGold) return formatPriceLocale(amount, 'VND', locale, true);
+    if (isForex) return formatPriceLocale(amount, 'VND', locale, false);
+    return formatPriceLocale(amount, 'USD', locale, false);
   };
 
   const formatSpread = (spread: number) => {
-    if (isDomesticGold) return formatVndMillions(spread);
-    if (isForex) return `${spread} ₫`;
-    return `$${spread.toFixed(2)}`;
+    if (isDomesticGold) return formatPriceLocale(spread, 'VND', locale, true);
+    if (isForex) return formatPriceLocale(spread, 'VND', locale, false);
+    return formatPriceLocale(spread, 'USD', locale, false);
   };
 
   return (

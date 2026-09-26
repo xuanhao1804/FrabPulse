@@ -30,7 +30,7 @@ type ChartStyle = 'AREA' | 'CANDLE';
 type Timeframe = '1D' | '1W' | '1M' | '3M' | '1Y';
 
 export function PriceEventChart({ xauCandles, sjcCandles, events }: PriceEventChartProps) {
-  const { t } = useLanguage();
+  const { t, timezone } = useLanguage();
   const [chartView, setChartView] = useState<ChartView>('XAU_USD');
   const [chartStyle, setChartStyle] = useState<ChartStyle>('AREA');
   const [timeframe, setTimeframe] = useState<Timeframe>('1D');
@@ -388,8 +388,14 @@ export function PriceEventChart({ xauCandles, sjcCandles, events }: PriceEventCh
         </div>
 
         <div className="text-right text-[11px] text-slate-500 dark:text-pulse-400">
-          <span>{currentHoverItem ? new Date(currentHoverItem.timestamp).toLocaleTimeString() : '---'}</span>
-          <span className="ml-1 text-[10px] text-slate-400 dark:text-pulse-500">UTC</span>
+          <span>
+            {currentHoverItem
+              ? new Date(currentHoverItem.timestamp).toLocaleTimeString([], {
+                  timeZone: timezone === 'ICT' ? 'Asia/Ho_Chi_Minh' : 'UTC'
+                })
+              : '---'}
+          </span>
+          <span className="ml-1 text-[10px] text-slate-400 dark:text-pulse-500 font-bold">{timezone}</span>
         </div>
       </div>
 
@@ -599,7 +605,12 @@ export function PriceEventChart({ xauCandles, sjcCandles, events }: PriceEventCh
                 </span>
                 <span className="text-xs text-slate-500 dark:text-pulse-400 flex items-center gap-1 font-mono">
                   <Calendar className="w-3 h-3" />
-                  {new Date(activeEvent.happenedAt).toLocaleTimeString()} UTC
+                  {new Date(activeEvent.happenedAt).toLocaleTimeString([], {
+                    timeZone: timezone === 'ICT' ? 'Asia/Ho_Chi_Minh' : 'UTC',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}{' '}
+                  {timezone}
                 </span>
               </div>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">{activeEvent.title}</h4>

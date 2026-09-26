@@ -27,3 +27,15 @@ export function formatAbsoluteDateTime(isoString: string): { utc: string; ict: s
   const ict = ictDate.toISOString().replace('T', ' ').slice(0, 19) + ' ICT';
   return { utc, ict };
 }
+
+export function formatDateTimeByTimezone(isoString: string, timezone: 'ICT' | 'UTC'): string {
+  const d = new Date(isoString);
+  if (isNaN(d.getTime())) return '---';
+  if (timezone === 'UTC') {
+    return d.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
+  }
+  const ictMs = d.getTime() + 7 * 3600000;
+  const ictDate = new Date(ictMs);
+  return ictDate.toISOString().replace('T', ' ').slice(0, 16) + ' ICT';
+}
+
