@@ -4,12 +4,15 @@ import React from 'react';
 import { MarketEvent, formatPercent } from '@frabpulse/shared';
 import { Radio, ExternalLink, ShieldCheck, Clock, CheckCircle2, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage } from '../../lib/i18n/LanguageContext';
 
 interface LiveEventsFeedProps {
   events: MarketEvent[];
 }
 
 export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
+  const { t } = useLanguage();
+
   const getTopicSlug = (type: MarketEvent['eventType']) => {
     switch (type) {
       case 'CENTRAL_BANK':
@@ -51,16 +54,16 @@ export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
           </div>
           <div>
             <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
-              Live Event Intelligence Feed
+              {t.events.title}
             </h2>
             <p className="text-xs text-slate-500 dark:text-pulse-400">
-              Clustered multi-source market news grounded with citations & price delta tracking
+              {t.events.subtitle}
             </p>
           </div>
         </div>
 
         <span className="text-xs font-mono font-bold text-slate-600 dark:text-pulse-400 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-pulse-950 border border-slate-200 dark:border-pulse-800">
-          {events.length} EVENTS
+          {events.length} {t.events.eventsCount}
         </span>
       </div>
 
@@ -94,7 +97,7 @@ export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
                 {/* Convergence confidence */}
                 <div className="flex items-center gap-1 text-[11px] font-mono font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
                   <CheckCircle2 className="w-3 h-3" />
-                  <span>{Math.round(event.confidence * 100)}% convergence</span>
+                  <span>{Math.round(event.confidence * 100)}% {t.events.convergence}</span>
                 </div>
               </div>
 
@@ -111,7 +114,7 @@ export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
               {/* Bottom Row: Correlated Assets & Verified Sources */}
               <div className="mt-3 pt-3 border-t border-slate-200 dark:border-pulse-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-slate-500 dark:text-pulse-500 text-[10px] uppercase font-mono mr-1 font-bold">Delta:</span>
+                  <span className="text-slate-500 dark:text-pulse-500 text-[10px] uppercase font-mono mr-1 font-bold">{t.events.delta}</span>
                   {event.relatedAssets.map((rel) => {
                     const isUp = rel.deltaPercent >= 0;
                     return (
@@ -132,7 +135,7 @@ export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
                 <div className="flex items-center justify-between sm:justify-end gap-3 pt-1 sm:pt-0">
                   <span className="text-slate-500 dark:text-pulse-400 text-[11px] flex items-center gap-1 font-mono">
                     <ShieldCheck className="w-3.5 h-3.5 text-slate-400 dark:text-pulse-400" />
-                    <span>{event.sources.length} sources</span>
+                    <span>{event.sources.length} {t.events.sourcesCount}</span>
                   </span>
 
                   <Link
@@ -140,7 +143,7 @@ export function LiveEventsFeed({ events }: LiveEventsFeedProps) {
                     className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-semibold text-xs min-h-[36px] py-1 px-3 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-pulse-900 dark:hover:bg-pulse-800 border border-slate-200 dark:border-pulse-800 transition-colors"
                     aria-label={`View full intelligence analysis for ${event.title}`}
                   >
-                    <span>Full Analysis</span>
+                    <span>{t.events.fullAnalysis}</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>

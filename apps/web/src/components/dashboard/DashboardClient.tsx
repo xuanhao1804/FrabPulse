@@ -23,6 +23,7 @@ import { ProviderCard } from './ProviderCard';
 import { AssetTableView } from './AssetTableView';
 import { PriceEventChart } from '../chart/PriceEventChart';
 import { LiveEventsFeed } from './LiveEventsFeed';
+import { useLanguage } from '../../lib/i18n/LanguageContext';
 import {
   RefreshCw,
   Layers,
@@ -62,6 +63,7 @@ export function DashboardClient({
   const [clockString, setClockString] = useState<string>('');
 
   const { status, latestPriceTick, latestGap, latestEvent, lastHeartbeat } = usePulseStream();
+  const { t } = useLanguage();
 
   // Load health status on mount
   useEffect(() => {
@@ -148,6 +150,16 @@ export function DashboardClient({
       {/* Top Financial Ticker Tape */}
       <MarketTickerTape prices={prices} gapData={gapData} />
 
+      {/* Semantic Localized Hero Header */}
+      <header className="space-y-2">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+          {t.hero.title}
+        </h1>
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-pulse-300 max-w-3xl leading-relaxed">
+          {t.hero.subtitle}
+        </p>
+      </header>
+
       {/* Reconnection Status Banner (when SSE disconnected or degraded) */}
       {status !== 'ONLINE' && (
         <div
@@ -195,7 +207,7 @@ export function DashboardClient({
               }`}
             />
             <span className="text-slate-600 dark:text-pulse-400 font-medium">
-              VN BULLION: <strong className={isDomesticOpen ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-500'}>{isDomesticOpen ? 'OPEN' : 'CLOSED'}</strong>
+              VN BULLION: <strong className={isDomesticOpen ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-500'}>{isDomesticOpen ? t.session.sessionOpen : t.session.sessionClosed}</strong>
             </span>
             {clockString && <span className="text-slate-400 dark:text-pulse-500">· {clockString}</span>}
           </div>
@@ -209,14 +221,14 @@ export function DashboardClient({
             aria-label="Refresh price and event data"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
-            <span>Refresh</span>
+            <span>{isRefreshing ? '...' : (t.nav.radar === 'Radar Vàng' ? 'Làm mới' : 'Refresh')}</span>
           </button>
 
           <Link
             href="/gold"
             className="flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-emerald-500/10 dark:hover:bg-emerald-500/20 dark:text-emerald-400 border border-transparent dark:border-emerald-500/20 text-xs font-semibold min-h-[44px] transition-colors shadow-xs"
           >
-            <span>Gold Hub</span>
+            <span>{t.nav.goldHub}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -230,7 +242,7 @@ export function DashboardClient({
         <div className="flex items-center justify-between flex-wrap gap-2">
           <h2 id="bullion-heading" className="text-sm sm:text-base font-bold text-slate-900 dark:text-white tracking-wide flex items-center gap-2">
             <Layers className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            <span>Domestic Bullion & Supporting Rates</span>
+            <span>{t.providers.title}</span>
           </h2>
 
           <div className="flex items-center gap-3">
@@ -243,8 +255,8 @@ export function DashboardClient({
                     ? 'bg-white dark:bg-pulse-800 text-emerald-700 dark:text-emerald-400 shadow-xs'
                     : 'text-slate-500 dark:text-pulse-400 hover:text-slate-800'
                 }`}
-                title="Grid Cards View"
-                aria-label="Switch to Grid View"
+                title={t.providers.cardsView}
+                aria-label={t.providers.cardsView}
               >
                 <LayoutGrid className="w-3.5 h-3.5" />
               </button>
@@ -255,8 +267,8 @@ export function DashboardClient({
                     ? 'bg-white dark:bg-pulse-800 text-emerald-700 dark:text-emerald-400 shadow-xs'
                     : 'text-slate-500 dark:text-pulse-400 hover:text-slate-800'
                 }`}
-                title="Table View"
-                aria-label="Switch to Table View"
+                title={t.providers.tableView}
+                aria-label={t.providers.tableView}
               >
                 <TableIcon className="w-3.5 h-3.5" />
               </button>
@@ -266,7 +278,7 @@ export function DashboardClient({
               href="/gold"
               className="text-xs font-mono font-semibold text-emerald-700 dark:text-emerald-400 hover:underline flex items-center gap-1"
             >
-              <span>View All Specs</span>
+              <span>{t.providers.viewSpecs}</span>
               <ArrowRight className="w-3 h-3" />
             </Link>
           </div>

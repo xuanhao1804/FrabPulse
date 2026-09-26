@@ -6,12 +6,14 @@ import { ArrowUpRight, ArrowDownRight, Layers, ChevronRight, Clock } from 'lucid
 import { MarketHealthBadge } from './MarketHealthBadge';
 import { formatTimeAgo, formatAbsoluteDateTime } from '../../lib/utils';
 import Link from 'next/link';
+import { useLanguage } from '../../lib/i18n/LanguageContext';
 
 interface ProviderCardProps {
   price: PriceSnapshot;
 }
 
 export function ProviderCard({ price }: ProviderCardProps) {
+  const { t } = useLanguage();
   const meta = ASSET_DEFINITIONS[price.assetCode];
   const isUp = (price.change24hPercent ?? 0) >= 0;
   const isDomesticGold = price.currency === 'VND' && price.assetCode !== 'USD_VND';
@@ -81,13 +83,13 @@ export function ProviderCard({ price }: ProviderCardProps) {
         {/* Buy / Sell display */}
         <div className="grid grid-cols-2 gap-3 pt-2.5 border-t border-slate-100 dark:border-pulse-800/80">
           <div>
-            <span className="text-[11px] font-medium text-slate-500 dark:text-pulse-400 block mb-0.5">Bid (Buy)</span>
+            <span className="text-[11px] font-medium text-slate-500 dark:text-pulse-400 block mb-0.5">{t.providers.buyBid}</span>
             <span className="text-base sm:text-lg font-extrabold font-mono tabular-nums text-slate-700 dark:text-pulse-200 truncate block">
               {formatPrice(price.buyPrice)}
             </span>
           </div>
           <div>
-            <span className="text-[11px] font-medium text-slate-500 dark:text-pulse-400 block mb-0.5">Ask (Sell)</span>
+            <span className="text-[11px] font-medium text-slate-500 dark:text-pulse-400 block mb-0.5">{t.providers.sellAsk}</span>
             <span className="text-base sm:text-lg font-extrabold font-mono tabular-nums text-slate-900 dark:text-white truncate block">
               {formatPrice(price.sellPrice)}
             </span>
@@ -98,7 +100,7 @@ export function ProviderCard({ price }: ProviderCardProps) {
       <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-slate-100 dark:border-pulse-800/40 text-[11px] text-slate-500 dark:text-pulse-400">
         <span className="flex items-center gap-1 truncate" title={absoluteDates ? `${absoluteDates.ict} | ${absoluteDates.utc}` : undefined}>
           <Layers className="w-3 h-3 text-slate-400 dark:text-pulse-500 shrink-0" />
-          <span className="truncate font-mono">Spread: {formatSpread(price.spread)}</span>
+          <span className="truncate font-mono">{t.providers.spread}: {formatSpread(price.spread)}</span>
           {relativeFreshness && (
             <span className="text-slate-400 dark:text-pulse-500 text-[10px] hidden xs:inline truncate">
               · {relativeFreshness}
@@ -111,7 +113,7 @@ export function ProviderCard({ price }: ProviderCardProps) {
           className="text-emerald-700 dark:text-emerald-400/90 hover:text-emerald-600 dark:hover:text-emerald-300 font-mono text-[11px] font-semibold flex items-center gap-0.5 shrink-0 min-h-[36px]"
           aria-label={`View detailed historical quotes for ${meta?.name || price.assetCode}`}
         >
-          <span>Details</span>
+          <span>{t.providers.details}</span>
           <ChevronRight className="w-3.5 h-3.5" />
         </Link>
       </div>

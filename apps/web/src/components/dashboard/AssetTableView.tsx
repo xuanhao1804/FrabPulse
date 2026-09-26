@@ -6,12 +6,15 @@ import { ArrowUpRight, ArrowDownRight, ChevronRight } from 'lucide-react';
 import { MarketHealthBadge } from './MarketHealthBadge';
 import { formatTimeAgo, formatAbsoluteDateTime } from '../../lib/utils';
 import Link from 'next/link';
+import { useLanguage } from '../../lib/i18n/LanguageContext';
 
 interface AssetTableViewProps {
   prices: PriceSnapshot[];
 }
 
 export function AssetTableView({ prices }: AssetTableViewProps) {
+  const { t } = useLanguage();
+
   if (!prices || prices.length === 0) return null;
 
   return (
@@ -19,14 +22,14 @@ export function AssetTableView({ prices }: AssetTableViewProps) {
       <table className="w-full text-left border-collapse text-xs">
         <thead>
           <tr className="border-b border-slate-200 dark:border-pulse-800 bg-slate-50/80 dark:bg-pulse-950/60 font-mono text-[11px] text-slate-500 dark:text-pulse-400 uppercase tracking-wider">
-            <th className="py-3 px-4">Asset</th>
-            <th className="py-3 px-3">Provider</th>
-            <th className="py-3 px-4 text-right">Bid (Buy)</th>
-            <th className="py-3 px-4 text-right">Ask (Sell)</th>
-            <th className="py-3 px-3 text-right">Spread</th>
-            <th className="py-3 px-3 text-right">24h Change</th>
-            <th className="py-3 px-3 text-center">Status</th>
-            <th className="py-3 px-4 text-right">Action</th>
+            <th className="py-3 px-4">{t.providers.asset}</th>
+            <th className="py-3 px-3">{t.providers.provider}</th>
+            <th className="py-3 px-4 text-right">{t.providers.buyBid}</th>
+            <th className="py-3 px-4 text-right">{t.providers.sellAsk}</th>
+            <th className="py-3 px-3 text-right">{t.providers.spread}</th>
+            <th className="py-3 px-3 text-right">{t.providers.change24h}</th>
+            <th className="py-3 px-3 text-center">{t.providers.status}</th>
+            <th className="py-3 px-4 text-right">{t.providers.action}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100 dark:divide-pulse-800/60 font-mono">
@@ -114,7 +117,7 @@ export function AssetTableView({ prices }: AssetTableViewProps) {
                     href={`/gold/${slug}`}
                     className="inline-flex items-center gap-0.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 hover:underline"
                   >
-                    <span>Inspect</span>
+                    <span>{t.providers.inspect}</span>
                     <ChevronRight className="w-3 h-3" />
                   </Link>
                 </td>

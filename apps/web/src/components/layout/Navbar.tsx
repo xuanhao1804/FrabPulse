@@ -17,10 +17,13 @@ import {
 } from 'lucide-react';
 
 import { ThemeToggle } from '../theme/ThemeToggle';
+import { LanguageToggle } from '../theme/LanguageToggle';
+import { useLanguage } from '../../lib/i18n/LanguageContext';
 
 export function Navbar() {
   const pathname = usePathname();
   const { status } = usePulseStream();
+  const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isOnline = status === 'ONLINE';
@@ -40,10 +43,10 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
-    { href: '/', label: 'Gold Pulse', icon: Activity },
-    { href: '/gold', label: 'Directory & Hub', icon: Layers },
-    { href: '/topics/central-bank', label: 'Topics & Policy', icon: Compass },
-    { href: '/methodology', label: 'Methodology & Facts', icon: ShieldCheck }
+    { href: '/', label: t.nav.radar, icon: Activity },
+    { href: '/gold', label: t.nav.goldHub, icon: Layers },
+    { href: '/topics/central-bank', label: t.nav.topics, icon: Compass },
+    { href: '/methodology', label: t.nav.methodology, icon: ShieldCheck }
   ];
 
   return (
@@ -89,6 +92,9 @@ export function Navbar() {
               </span>
             </div>
 
+            {/* Language Switcher (VI / EN) */}
+            <LanguageToggle />
+
             {/* Theme Toggle (Light / Dark mode) */}
             <ThemeToggle />
 
@@ -107,7 +113,7 @@ export function Navbar() {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden flex items-center justify-center w-11 h-11 rounded-xl bg-slate-100 dark:bg-pulse-900 border border-slate-200 dark:border-pulse-800 text-slate-700 dark:text-pulse-300 hover:bg-slate-200 dark:hover:bg-pulse-850 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
-              aria-label={mobileMenuOpen ? 'Close main menu' : 'Open main menu'}
+              aria-label={mobileMenuOpen ? t.nav.closeMenu : t.nav.menu}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"
             >
@@ -171,7 +177,7 @@ export function Navbar() {
           }`}
         >
           <Activity className="w-4 h-4 mb-0.5" />
-          <span>Radar</span>
+          <span>{t.nav.radar}</span>
         </Link>
 
         <Link
@@ -181,7 +187,7 @@ export function Navbar() {
           }`}
         >
           <Layers className="w-4 h-4 mb-0.5" />
-          <span>Gold Hub</span>
+          <span>{t.nav.goldHub}</span>
         </Link>
 
         <Link
@@ -191,7 +197,7 @@ export function Navbar() {
           }`}
         >
           <Compass className="w-4 h-4 mb-0.5" />
-          <span>Topics</span>
+          <span>{t.nav.topics}</span>
         </Link>
 
         <Link
@@ -201,7 +207,7 @@ export function Navbar() {
           }`}
         >
           <ShieldCheck className="w-4 h-4 mb-0.5" />
-          <span>Method</span>
+          <span>{t.nav.methodology}</span>
         </Link>
       </nav>
     </>

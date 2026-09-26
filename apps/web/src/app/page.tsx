@@ -51,16 +51,6 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetJsonLd) }}
       />
 
-      {/* Semantic Server-Rendered Hero Header */}
-      <header className="space-y-2">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
-          Gold Pulse Radar
-        </h1>
-        <p className="text-xs sm:text-sm text-slate-600 dark:text-pulse-300 max-w-3xl leading-relaxed">
-          Real-time domestic bullion quotations, global spot gold correlation, and multi-source event intelligence. Measuring what moves, when it moves.
-        </p>
-      </header>
-
       {/* Interactive Client Island with Initial Server Data */}
       <DashboardClient
         initialPrices={prices}

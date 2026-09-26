@@ -4,6 +4,7 @@ import React from 'react';
 import { PriceSnapshot, GoldGapAnalysis, formatVndMillions, formatUsd, formatPercent } from '@frabpulse/shared';
 import { TrendingUp, TrendingDown, Scale } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage } from '../../lib/i18n/LanguageContext';
 
 interface MarketTickerTapeProps {
   prices: PriceSnapshot[];
@@ -11,6 +12,7 @@ interface MarketTickerTapeProps {
 }
 
 export function MarketTickerTape({ prices, gapData }: MarketTickerTapeProps) {
+  const { t } = useLanguage();
   if (!prices || prices.length === 0) return null;
 
   return (
@@ -19,14 +21,14 @@ export function MarketTickerTape({ prices, gapData }: MarketTickerTapeProps) {
         {/* Real-time Ticker Tag */}
         <div className="flex items-center gap-1.5 shrink-0 pr-3 border-r border-slate-200 dark:border-pulse-800 text-[11px] font-bold text-slate-500 dark:text-pulse-400">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-          <span>LIVE QUOTES</span>
+          <span>{t.ticker.liveTicker}</span>
         </div>
 
         {/* Gold Gap Item */}
         {gapData && (
           <div className="flex items-center gap-2 shrink-0 px-2 py-0.5 rounded-lg bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/20 text-amber-800 dark:text-amber-300">
             <Scale className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-            <span className="font-semibold">SJC/WORLD GAP:</span>
+            <span className="font-semibold">{t.ticker.gap.toUpperCase()}:</span>
             <span className="font-bold">+{formatVndMillions(gapData.gapVnd)}</span>
             <span className="text-[10px] text-amber-700 dark:text-amber-300/80">({formatPercent(gapData.gapPercent)})</span>
           </div>

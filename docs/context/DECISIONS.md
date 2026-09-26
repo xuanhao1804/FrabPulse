@@ -82,4 +82,16 @@
 - **Rationale**: Git history and GitHub Issues are durable, searchable, cryptographically anchored, and accessible to any agent or engineer.
 - **Consequences**: All future agent work must check context files first, create/link a GitHub Issue, and update context files before closing.
 - **Related Issue**: [#1](https://github.com/xuanhao1804/FrabPulse/issues/1)
+- **Related Commit**: [`f31d5ce`](https://github.com/xuanhao1804/FrabPulse/commit/f31d5ce)
+
+---
+
+## ADR-008: Type-Safe Dual-Language (VI/EN) i18n Architecture with Zero-FOUC Synchronization
+- **Date**: 2026-09-26
+- **Context**: Vietnamese domestic gold markets require native terminology (lượng, chỉ, giá mua vào/bán ra, chênh lệch), while global users require standard international finance terms (troy oz, bid, ask, spread, arbitrage).
+- **Decision**: Implement a lightweight, type-safe React Context (`LanguageProvider` + `useLanguage`) with typed dictionary parity (`vi` default and `en`), persistent `localStorage` storage (`frabpulse-locale`), synchronous `<head>` script to prevent language flashing, accessible 44px `<LanguageToggle />` button, and dynamic `document.documentElement.lang` syncing.
+- **Rationale**: Zero external runtime bundle bloat (no bloated third-party frameworks), compile-time key verification via `DeepString<typeof translations['vi']>`, zero hydration mismatch, and instant toggle without full page reloads.
+- **Consequences**: All new user-facing UI copy must be added with exact key symmetry to both `vi` and `en` in `translations.ts`. Verified by automated parity tests in `apps/web/test/i18n.test.ts`.
+- **Related Issue**: [#12](https://github.com/xuanhao1804/FrabPulse/issues/12)
 - **Related Commit**: Current commit
+
