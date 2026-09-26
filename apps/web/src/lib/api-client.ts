@@ -306,18 +306,21 @@ export async function fetchHistoricalChart(asset = 'XAU_USD'): Promise<PriceCand
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.json();
   } catch {
-    // Generate basic curve for fallback
+    // Generate high-density 120-point curve for fallback (12-minute intervals over 24h)
     const points: PriceCandle[] = [];
     let base = asset === 'XAU_USD' ? 2650 : 88_500_000;
-    for (let i = 24; i >= 0; i--) {
-      base += (Math.sin(i * 0.5) * (asset === 'XAU_USD' ? 3 : 40000));
+    const totalPoints = 120;
+    const stepMs = 12 * 60 * 1000;
+    for (let i = totalPoints - 1; i >= 0; i--) {
+      const delta = Math.sin(i * 0.15) * (asset === 'XAU_USD' ? 1.8 : 35000) + (Math.sin(i * 0.05) * (asset === 'XAU_USD' ? 2.5 : 50000));
+      base += delta * 0.2;
       points.push({
-        timestamp: new Date(Date.now() - i * 3600000).toISOString(),
-        open: base - 2,
-        high: base + 3,
-        low: base - 3,
-        close: base,
-        volume: 500
+        timestamp: new Date(Date.now() - i * stepMs).toISOString(),
+        open: Math.round((base - delta * 0.5) * 100) / 100,
+        high: Math.round((base + Math.abs(delta) * 0.8 + 1) * 100) / 100,
+        low: Math.round((base - Math.abs(delta) * 0.8 - 1) * 100) / 100,
+        close: Math.round(base * 100) / 100,
+        volume: Math.floor(600 + Math.abs(delta) * 20)
       });
     }
     return points;

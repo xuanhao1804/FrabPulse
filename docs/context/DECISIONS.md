@@ -128,7 +128,27 @@
 - **Rationale**: Elevates FrabPulse from a prototype to an institutional-grade financial intelligence terminal, delivering transparent source attribution, high usability, and professional aesthetic rigor.
 - **Consequences**: Future chart indicators and UI panels must adhere to the sans-serif UI + tabular-nums data convention and preserve the right-axis coordinate geometry.
 - **Related Issue**: [#14](https://github.com/xuanhao1804/FrabPulse/issues/14)
+- **Related Commit**: [`e4f6408`](https://github.com/xuanhao1804/FrabPulse/commit/e4f6408)
+
+---
+
+## ADR-011: Financial Terminal Pro Chart: High-Density Continuous Cursor Tracking & Investing.com Style Vibe
+- **Date**: 2026-09-26
+- **Context**: User feedback identified that hovering over the financial chart resulted in discrete jumping between widely spaced points rather than the continuous, fluid tracking expected in professional trading platforms like Investing.com and TradingView. Furthermore, user requested close adherence to the Investing.com visual hierarchy and return metrics bar.
+- **Decision**:
+  1. Increase historical data resolution to 120 high-density points (12-minute intervals across 24h) in both seed generation and client fallbacks.
+  2. Implement a continuous sub-pixel mouse interpolation engine: on cursor movement, calculate fractional indices and linearly interpolate price $Y(X)$ and timestamp $T(X)$ at sub-pixel granularity. The vertical crosshair, horizontal line, active price circle, and tooltips glide at 60fps without any discrete stepping.
+  3. Adopt the signature Investing.com layout:
+     - Bottom timeframe return matrix (`1D`, `1W`, `1M`, `3M`, `6M`, `1Y`, `5Y`, `ALL`) with color-coded % returns.
+     - Royal Blue palette (`#2563EB`) with subtle area gradient for international spot gold, Emerald (`#10B981`) for domestic SJC, and Amber (`#F59E0B`) for gold gap.
+     - Benchmark current price dashed horizontal line across the canvas with active price tag pill on the right scale.
+     - Circular `N` news event markers positioned along the bottom timeline.
+     - Clean sub-navigation tabs (`Tổng quan`, `Dữ liệu Lịch sử`, `Phân tích Kỹ thuật`, `Công cụ Quy đổi`) and quick `Mua` / `Bán` terminal action badges.
+- **Rationale**: Eliminates discrete stepping without adding heavy third-party Canvas charting dependencies, preserving zero-FOUC, SSR compatibility, light bundle footprint, and full theme reactivity.
+- **Consequences**: Future chart modes must calculate continuous hover coordinates via the sub-pixel interpolation engine rather than index rounding.
+- **Related Issue**: [#15](https://github.com/xuanhao1804/FrabPulse/issues/15)
 - **Related Commit**: Pending commit
+
 
 
 

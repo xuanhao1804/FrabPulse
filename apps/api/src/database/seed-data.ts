@@ -195,48 +195,49 @@ export function getLatestSeedGoldGap(): GoldGapAnalysis {
   return calculateGoldGap(xau, usdVnd, sjc, true);
 }
 
-// 48-point 24-hour historical candlestick series for XAU/USD and SJC
+// 120-point 24-hour high-density candlestick series for XAU/USD and SJC (12-minute resolution)
 export function generateSeedHistoricalSeries(): { xauSeries: PriceCandle[]; sjcSeries: PriceCandle[] } {
   const xauSeries: PriceCandle[] = [];
   const sjcSeries: PriceCandle[] = [];
   const now = Date.now();
-  const stepMs = 30 * 60 * 1000; // 30-minute intervals = 48 points in 24 hours
+  const totalPoints = 120;
+  const stepMs = 12 * 60 * 1000; // 12-minute intervals = 120 points in 24 hours
 
   // Base starting prices 24 hours ago
   let currXau = 2648.50;
   let currSjc = 88_900_000;
 
-  for (let i = 47; i >= 0; i--) {
+  for (let i = totalPoints - 1; i >= 0; i--) {
     const time = new Date(now - i * stepMs).toISOString();
 
-    // Event impact at step 20 (Fed announcement simulation: dip)
-    let xauDelta = (Math.sin(i * 0.4) * 3) + ((Math.random() - 0.48) * 4);
-    if (i === 20) xauDelta -= 14.5; // Event drop
-    if (i === 10) xauDelta += 18.2; // Geopolitical spike
+    // Event impact at step 50 (Fed announcement simulation: dip) and step 25 (Geopolitical spike)
+    let xauDelta = (Math.sin(i * 0.18) * 1.5) + ((Math.random() - 0.49) * 2.2);
+    if (i >= 48 && i <= 52) xauDelta -= 3.5; // Event drop
+    if (i >= 23 && i <= 27) xauDelta += 4.2; // Geopolitical spike
 
     currXau = Math.round((currXau + xauDelta) * 100) / 100;
-    const xauHigh = currXau + Math.random() * 2.5;
-    const xauLow = currXau - Math.random() * 2.5;
+    const xauHigh = currXau + Math.random() * 1.8;
+    const xauLow = currXau - Math.random() * 1.8;
 
     xauSeries.push({
       timestamp: time,
-      open: currXau - xauDelta,
+      open: Math.round((currXau - xauDelta) * 100) / 100,
       high: Math.max(currXau, xauHigh),
       low: Math.min(currXau, xauLow),
       close: currXau,
-      volume: Math.floor(1200 + Math.random() * 800)
+      volume: Math.floor(800 + Math.random() * 600)
     });
 
     // SJC domestic movement (smoother, domestic premium dynamics)
-    let sjcDelta = Math.round(xauDelta * 28000 + (Math.random() - 0.5) * 80000);
+    let sjcDelta = Math.round(xauDelta * 28000 + (Math.random() - 0.5) * 45000);
     currSjc += sjcDelta;
     sjcSeries.push({
       timestamp: time,
       open: currSjc - sjcDelta,
-      high: currSjc + 50000,
-      low: currSjc - 50000,
+      high: currSjc + 35000,
+      low: currSjc - 35000,
       close: currSjc,
-      volume: Math.floor(400 + Math.random() * 200)
+      volume: Math.floor(350 + Math.random() * 180)
     });
   }
 
