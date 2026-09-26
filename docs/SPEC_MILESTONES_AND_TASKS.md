@@ -21,11 +21,11 @@ flowchart TD
         V1_5["SEO Public Routes & JSON-LD"]
     end
 
-    subgraph V15 ["V1.5: Live Ingestion & Data Resilience (IMMEDIATE TARGET)"]
-        T1["Task 1: Live Market Polling Adapters (SJC, DOJI, XAU/USD, FX)"]
-        T2["Task 2: Verified News RSS & Web Crawler Pipeline"]
-        T3["Task 3: Ingestion Worker & Circuit Breaker Engine"]
-        T4["Task 4: Live Data Health Radar & Fallback UI Indicator"]
+    subgraph V15 ["V1.5: Live Ingestion & Data Resilience (COMPLETED & VERIFIED)"]
+        T1["Task 1: Live Market Polling Adapters (SJC, DOJI, XAU/USD, FX) [DONE]"]
+        T2["Task 2: Verified News RSS & Web Crawler Pipeline [DONE]"]
+        T3["Task 3: Ingestion Worker & Circuit Breaker Engine [DONE]"]
+        T4["Task 4: Live Data Health Radar & Fallback UI Indicator [DONE]"]
     end
 
     subgraph V2 ["V2: Automated Event Intelligence Engine"]
@@ -57,7 +57,7 @@ flowchart TD
 
 ### 2.2 Task Breakdown for Milestone V1.5
 
-#### [Task 1.5.1] Live Market Data Providers & Currency Exchange Adapters
+#### [Task 1.5.1] Live Market Data Providers & Currency Exchange Adapters [COMPLETED - commit 923a48d]
 - **Objective**: Implement concrete, production-grade market data adapters behind `IMarketDataProvider` interface for domestic gold, global spot gold, and foreign exchange rates.
 - **Target Modules & Files**:
   - `packages/shared/src/domain.ts` (extended provider status & freshness types)
@@ -76,7 +76,7 @@ flowchart TD
 
 ---
 
-#### [Task 1.5.2] Verified News Pipeline & Multi-Source RSS Ingestion
+#### [Task 1.5.2] Verified News Pipeline & Multi-Source RSS Ingestion [COMPLETED - commit 6c07fef]
 - **Objective**: Ingest accredited financial journalism and regulatory news articles from RSS feeds and canonical web sources with automated deduplication.
 - **Target Modules & Files**:
   - `apps/api/src/news/providers/rss-feed.provider.ts` (VnExpress Kinh Doanh, Tuoi Tre Tài Chính, Kitco Gold News RSS)
@@ -92,7 +92,7 @@ flowchart TD
 
 ---
 
-#### [Task 1.5.3] Ingestion Worker, Scheduler & Circuit Breaker
+#### [Task 1.5.3] Ingestion Worker, Scheduler & Circuit Breaker [COMPLETED - commit fc2f69e]
 - **Objective**: Establish background scheduled polling with exponential backoff and circuit breaker protection to prevent rate-limiting or blocking.
 - **Target Modules & Files**:
   - `apps/api/src/market-data/market-data.scheduler.ts` (Cron: Market hours vs. Closed hours)
@@ -107,7 +107,7 @@ flowchart TD
 
 ---
 
-#### [Task 1.5.4] Data Freshness UI, Health Radar & Source Provenance
+#### [Task 1.5.4] Data Freshness UI, Health Radar & Source Provenance [COMPLETED - commit f55da91]
 - **Objective**: Provide absolute transparency in the web dashboard regarding data origin, last update timestamp, and fallback indicators.
 - **Target Modules & Files**:
   - `apps/web/src/components/dashboard/MarketHealthBadge.tsx` (Live vs. Cached vs. Offline)
