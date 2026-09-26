@@ -72,6 +72,16 @@ export function getAssetBySlug(slug: string): AssetMetadata | undefined {
   return Object.values(ASSET_DEFINITIONS).find((a) => a.slug === slug.toLowerCase());
 }
 
+export type ProviderDataSource = 'LIVE_FEED' | 'CACHED' | 'FALLBACK';
+
+export interface MarketHealthStatus {
+  status: 'HEALTHY' | 'DEGRADED' | 'OFFLINE';
+  lastSync: string; // ISO 8601
+  liveAssetCount: number;
+  totalAssetCount: number;
+  activeSources: string[];
+}
+
 export interface PriceSnapshot {
   assetCode: AssetCode;
   providerCode: string;
@@ -83,6 +93,8 @@ export interface PriceSnapshot {
   change24hAbsolute?: number;
   change24hPercent?: number;
   isDemo: boolean;
+  sourceType?: ProviderDataSource;
+  lastFetchedAt?: string;
 }
 
 export interface PriceCandle {
@@ -104,4 +116,5 @@ export interface GoldGapAnalysis {
   conversionFactor: number; // 1.20565
   timestamp: string;
   isDemo: boolean;
+  sourceType?: ProviderDataSource;
 }

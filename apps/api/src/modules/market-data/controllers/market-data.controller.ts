@@ -25,4 +25,9 @@ export class MarketDataController {
   getAssets() {
     return this.marketDataService.getAssetsList();
   }
+
+  @Get('health')
+  async getMarketHealth() {
+    return this.marketDataService.getMarketHealth();
+  }
 }

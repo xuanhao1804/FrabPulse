@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { GoldGapAnalysis, calculateGoldGap } from '@frabpulse/shared';
-import { LATEST_SEED_PRICES } from '../../../database/seed-data';
+import { GoldGapAnalysis, PriceSnapshot, ProviderDataSource, calculateGoldGap } from '@frabpulse/shared';
 
 @Injectable()
 export class GoldGapService {
@@ -15,11 +14,24 @@ export class GoldGapService {
     return calculateGoldGap(xauUsd, usdVnd, domesticSellPriceVnd, isDemo);
   }
 
-  getLatestGapFromPrices(prices: { assetCode: string; sellPrice: number }[]): GoldGapAnalysis {
-    const xau = prices.find((p) => p.assetCode === 'XAU_USD')?.sellPrice || 2663.40;
-    const usdVnd = prices.find((p) => p.assetCode === 'USD_VND')?.sellPrice || 25440;
-    const sjc = prices.find((p) => p.assetCode === 'SJC_VN')?.sellPrice || 89_500_000;
+  getLatestGapFromPrices(prices: PriceSnapshot[]): GoldGapAnalysis {
+    const xauObj = prices.find((p) => p.assetCode === 'XAU_USD');
+    const usdVndObj = prices.find((p) => p.assetCode === 'USD_VND');
+    const sjcObj = prices.find((p) => p.assetCode === 'SJC_VN');
 
-    return this.calculateGap(xau, usdVnd, sjc, true);
+    const xau = xauObj?.sellPrice || 2663.40;
+    const usdVnd = usdVndObj?.sellPrice || 25440;
+    const sjc = sjcObj?.sellPrice || 89_500_000;
+
+    const isAnyDemo = Boolean(xauObj?.isDemo || usdVndObj?.isDemo || sjcObj?.isDemo);
+    const hasLive = xauObj?.sourceType === 'LIVE_FEED' && sjcObj?.sourceType === 'LIVE_FEED';
+
+    const gap = this.calculateGap(xau, usdVnd, sjc, isAnyDemo);
+    const sourceType: ProviderDataSource = hasLive ? 'LIVE_FEED' : (isAnyDemo ? 'FALLBACK' : 'CACHED');
+
+    return {
+      ...gap,
+      sourceType
+    };
   }
 }

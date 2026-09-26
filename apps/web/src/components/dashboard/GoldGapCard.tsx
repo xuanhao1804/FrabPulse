@@ -30,6 +30,12 @@ export function GoldGapCard({ gapData }: GoldGapCardProps) {
               <span className="px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-mono rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                 ARBITRAGE SPREAD
               </span>
+              {gapData.sourceType === 'LIVE_FEED' && (
+                <span className="inline-flex items-center gap-1 text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  REAL-TIME MARKET
+                </span>
+              )}
             </div>
             <p className="text-[11px] sm:text-xs text-pulse-400 mt-0.5">
               Empirical spread between SJC 9999 and converted international spot bullion

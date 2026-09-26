@@ -31,11 +31,22 @@ export function ProviderCard({ price }: ProviderCardProps) {
       <div>
         <div className="flex items-start justify-between mb-3">
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
               <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-pulse-800 text-pulse-300">
                 {meta ? meta.symbol : price.assetCode}
               </span>
               <span className="text-[11px] sm:text-xs text-pulse-400">{price.providerCode}</span>
+              {price.sourceType === 'LIVE_FEED' && (
+                <span className="inline-flex items-center gap-1 text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  LIVE
+                </span>
+              )}
+              {price.sourceType === 'CACHED' && (
+                <span className="inline-flex items-center gap-1 text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-medium">
+                  CACHED
+                </span>
+              )}
             </div>
             <Link
               href={`/gold/${slug}`}
